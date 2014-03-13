@@ -17,21 +17,26 @@ Vmap.Renderer.prototype.setCanvas = function(layer){
 };
 
 Vmap.Renderer.prototype.convert2XY = function(lng, lat){
-	var scaleX = ((this.maxLng - this.minLng)*3600) / this.height; 
-	var scaleY = ((this.maxLat - this.minLat)*3600) / this.width; 
-	var y = (lng - this.minLng)*3600/scaleX;
-	var x = (this.maxLat - lat)*3600/scaleY;
+	var scaleX = ((this.maxLng - this.minLng)) *3600 / this.width;
+	var scaleY = ((this.maxLat - this.minLat)) *3600 / this.height; 
+	var x = (lng - this.minLng) *3600 /scaleX;
+	var y = (this.maxLat - lat) *3600 /scaleY;
 	return {x: x, y: y};
 }
 
 Vmap.Renderer.prototype.drawPoint = function(point, style){
 	var _point = this.convert2XY(point.x, point.y);
-
+	this.context.fillStyle="#FF0000";
+	this.context.beginPath();
+	this.context.arc(_point.x, _point.y,15,0,Math.PI*2,true);
+	this.context.closePath();
+	this.context.fill();
 };
 
 Vmap.Renderer.prototype.drawLine = function(point1, point2, style){
 	var _point1 = this.convert2XY(point1.x, point1.y);
 	var _point2 = this.convert2XY(point2.x, point2.y);
+	console.log(_point1);
 	this.context.moveTo(_point1.x, _point1.y);
 	this.context.lineTo(_point2.x, _point2.y);
 	this.context.stroke();
