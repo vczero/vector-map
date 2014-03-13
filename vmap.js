@@ -9,11 +9,11 @@
 
 var Vmap = new Object(); //命名空间
 /*
-+++++++++++++++++++++++++++++++++++++++
++----------------------------------------
 * author: wanglihua
 * date: 2014/3/12
 * description: 屏幕坐标&经纬度互相转化
-+++++++++++++++++++++++++++++++++++++++
++----------------------------------------
 */
 Vmap.Position = function(){}; //Position类
 /*
@@ -57,4 +57,28 @@ Position.convert2XY = function(width, height, lng, lat, maxLng, minLng, maxLat, 
 	return {x: x, y: y};
 }
 
+/*
++----------------------------------------
+* author: wanglihua
+* date: 2014/3/13
+* description: 图层
++----------------------------------------
+*/
+Vmap.Layer = function(div){
+	this.div = document.getElementById(div);
+	this.width = parseInt(div.style.width.replace(/px/,'')); //图层的宽度
+	this.height = parseInt(div.style.height.replace(/px/,'')); //图层的高度
+	this.geometrys = [];
+}
 
+//添加矢量图形
+Layer.prototype.addGeometrys = function(geometrys){
+	for(var i = 0; i < geometrys.length; i++){
+		drawGeometry(geometrys[i]);
+	}
+}
+
+//绘制矢量图形
+Layer.prototype.drawGeometry = function(geometry){
+
+}
