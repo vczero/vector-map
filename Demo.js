@@ -6,7 +6,7 @@ window.onload = function() {
 	    "coordinates": [135.5, 53]
 	  },
 	  "properties": {
-	    "name": "Dinagat Islands"
+	    "name": "XXX"
 	  }
 	};
 	var map = new Map('map');
@@ -92,35 +92,39 @@ Map.xy2LngLat = function(width, height, x, y, maxLng, minLng, maxLat, minLat){
  	return {lng: lng, lat: lat};
 }
 //------------------------绘制点图层--------------------------------
-
-/*{
-  "type": "Feature",
-  "geometry": {
-    "type": "Point",
-    "coordinates": [125.6, 10.1]
-  },
-  "properties": {
-    "name": "Dinagat Islands"
-  }
-}*/
-Map.prototype.drawPoint = function(geoPoint){
-	var lnglat = geoPoint.geometry.coordinates;
-	console.log(lnglat[0]);
-	var xy = Map.lngLat2XY(this.width, this.height, lnglat[0], lnglat[1], this.maxLng, 
-		this.minLng, this.maxLat, this.minLat);
+//点模型
+Map.prototype.Point = function(x, y){
+	this.x = x;
+	this.y = y;
+};
+//添加点
+Map.prototype.addPoint = function(point){
+	var xy = Map.lngLat2XY(this.width, this.height, point.x, point.y, 
+		this.maxLng, this.minLng, this.maxLat, this.minLat);
 	var x = xy.x;
 	var y = xy.y;
-
-	console.log(x,y);
 	this.context.fillStyle = "#FF0000";
 	this.context.beginPath();
 	this.context.arc(x,y,5,0,Math.PI*2,true);
 	this.context.closePath();
 	this.context.fill();
 }
+//geojson格式绘点
+Map.prototype.drawPoint = function(geo_point){
+	var lnglat = geo_point.geometry.coordinates;
+	var point = new this.Point(lnglat[0], lnglat[1]);
+	this.addPoint(point);
+}
 
-var drawPointBatch = function(geoPoints){
 
+
+var drawPointBatch = function(multiPoint){
+	var lnglats = multiPoint.geometry.coordinates;
+	if(lnglats){
+		for(var i = 0; i < lnglats.length; i++){
+			this.drawPoint();
+		}
+	}
 }
 
 
