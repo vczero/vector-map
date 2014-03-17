@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		<style type="text/css">
+			.btn{
+				border:0;
+				background-color:#2939C6;
+				color:#FFF;
+				width:50px;
+				height: 20px;
+			}
+		</style>
+		<script type="text/javascript" src="Demo.js"></script>
+	</head>
+	<body style="font-size:12px;">
+		<div style="width:600px;height:400px;border:1px solid #CCCCCC; margin-left:auto;margin-right:auto;margin-top:50px;">
+			<canvas id="mymap" style="width:600px;height:400px;" onmousemove="showLngLat(event)">
+				您的设备不支持html5 canvas
+		    </canvas>
+		</div>
+		<div style="width:600px;height:60px;border:1px solid #CCCCCC;border-top:0; margin-left:auto;margin-right:auto;">
+			<span id="show_lnglat">当前经纬度为：</span><br/><br/>
+			<input class="btn" type="button" value = "放大" />
+			<input class="btn" type="button" value = "缩小" />
+			<input class="btn" type="button" value = "左移" />
+			<input class="btn" type="button" value = "右移" />
+			<input class="btn" type="button" value = "画点" />
+			<input class="btn" type="button" value = "画线" />
+			<input class="btn" type="button" value = "画面" />
+			<input class="btn" type="button" value = "线图层" />
+			<input class="btn" type="button" value = "面图层" />
+			<input class="btn" type="button" value = "点图层" />
+		</div>
+	</body>
+</html>
