@@ -28,6 +28,18 @@ window.onload = function() {
 	  }
 	};
 	map.drawMultiPoint(mpoint);
+
+	var line = {
+	  "type": "Feature",
+	  "geometry": {
+	    "type": "MultiPoint",
+	    "coordinates": [[135.5, 53],[110,34]]
+	  },
+	  "properties": {
+	    "name": "XXX"
+	  }
+	};
+	map.drawLine(line);
 }
 
 /*
@@ -143,6 +155,7 @@ Map.prototype.addPoint = function(point){
 		this.maxLng, this.minLng, this.maxLat, this.minLat);
 	var x = xy.x;
 	var y = xy.y;
+
 	this.context.fillStyle = "#FF0000";
 	this.context.beginPath();
 	this.context.arc(x,y,point.size,0,Math.PI*2,true);
@@ -208,5 +221,56 @@ Map.prototype.drawMultiPoint = function(geo_multiPoint){
 	var pointArr = geo_multiPoint.geometry.coordinates;
 	this.addMultiPoint(pointArr);
 }
+/*
++-------------------------------------------------------
++ 线模型(x,y)
++ 分为两种情况绘制:Line结构和GeoJSON格式
++-------------------------------------------------------
+*/
+Map.prototype.Line = function(point1, point2){
+	this.point1 = point1;
+	this.point2 = point2;
+}
+/*
++----------------------------
++ 添加线(按线的结构)
++----------------------------
+*/
+Map.prototype.addLine = function(line){
+	var point1 = line.point1;
+	var point2 = line.point2;
+	var xy1 = Map.lngLat2XY(this.width, this.height, point1.x, point1.y, 
+		this.maxLng, this.minLng, this.maxLat, this.minLat);
+	var xy2 = Map.lngLat2XY(this.width, this.height, point2.x, point2.y, 
+		this.maxLng, this.minLng, this.maxLat, this.minLat);
+	this.context.beginPath();
+	this.context.strokeStyle ="#FFC56B";
+	this.context.lineWidth=3;
+	this.context.moveTo(xy1.x,xy1.y);
+	this.context.lineTo(xy2.x,xy2.y);
+	this.context.stroke();
+}
+/*
++-----------------------------
++ 绘制多点(按GeoJSON格式)
+	{
+		"type": "Feature",
+		"geometry": {
+		    "type": "LineString",
+		    "coordinates": [[135.5, 53],[110,34]]
+		},
+		  "properties": {
+		    "name": "XXX"
+		}
+	}
++-----------------------------
+*/
+Map.prototype.drawLine = function(geo_line){
+	var coordinates = geo_line.geometry.coordinates;
+	var point1 = new this.Point(coordinates[0][0],coordinates[0][1]);
+	var point2 = new this.Point(coordinates[1][0],coordinates[1][1]);
+	var line = new this.Line(point1,point2);
+	this.addLine(new this.Line(point1,point2));
+}
 
-
+ 
