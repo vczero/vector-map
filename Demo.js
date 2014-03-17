@@ -10,10 +10,21 @@ window.onload = function() {
 	  }
 	};
 	var map = new Map('map');
-	map.drawPoint(point);
 	map.getPosition(function(data){
 		document.getElementById('show_lnglat').innerHTML = '当前经纬度为:' + data.lng + ',' + data.lat;
 	});
+	map.drawPoint(point);
+	var mpoint = {
+	  "type": "Feature",
+	  "geometry": {
+	    "type": "MultiPoint",
+	    "coordinates": [[125.5, 13],[110,34]]
+	  },
+	  "properties": {
+	    "name": "XXX"
+	  }
+	};
+	map.drawMultiPoint(mpoint);
 }
 
 //--------------------------map---------------------------------
@@ -91,13 +102,22 @@ Map.xy2LngLat = function(width, height, x, y, maxLng, minLng, maxLat, minLat){
  	var lat = maxLat - y*scaleY/3600; 
  	return {lng: lng, lat: lat};
 }
-//------------------------绘制点图层--------------------------------
-//点模型
+/*
++-------------------------------------------------------
++ 点模型(x,y)
++ 分为两种情况绘制:Point结构和GeoJSON格式
++-------------------------------------------------------
+*/
 Map.prototype.Point = function(x, y){
 	this.x = x;
 	this.y = y;
+	this.size = 10;
 };
-//添加点
+/*
++----------------------------
++ 添加点(按点的结构)
++----------------------------
+*/
 Map.prototype.addPoint = function(point){
 	var xy = Map.lngLat2XY(this.width, this.height, point.x, point.y, 
 		this.maxLng, this.minLng, this.maxLat, this.minLat);
@@ -105,26 +125,68 @@ Map.prototype.addPoint = function(point){
 	var y = xy.y;
 	this.context.fillStyle = "#FF0000";
 	this.context.beginPath();
-	this.context.arc(x,y,5,0,Math.PI*2,true);
+	this.context.arc(x,y,point.size,0,Math.PI*2,true);
 	this.context.closePath();
 	this.context.fill();
 }
-//geojson格式绘点
+/*
++-----------------------------
++ 绘制点(按GeoJSON格式)
+	{
+	  "type": "Feature",
+	  "geometry": {
+	    "type": "Point",
+	    "coordinates": [135.5, 53]
+	  },
+	  "properties": {
+	    "name": "XXX"
+	  }
+	}
++-----------------------------
+*/
 Map.prototype.drawPoint = function(geo_point){
 	var lnglat = geo_point.geometry.coordinates;
 	var point = new this.Point(lnglat[0], lnglat[1]);
 	this.addPoint(point);
 }
-
-
-
-var drawPointBatch = function(multiPoint){
-	var lnglats = multiPoint.geometry.coordinates;
-	if(lnglats){
-		for(var i = 0; i < lnglats.length; i++){
-			this.drawPoint();
-		}
+/*
++-------------------------------------------------------
++ 多点模型([[110,32],[118,40]])
++ 分为两种情况绘制:MultiPoint结构和GeoJSON格式
++-------------------------------------------------------
+*/
+Map.prototype.MultiPoint = function(pointArr){
+	this.pointArr = pointArr;
+}
+/*
++----------------------------
++ 添加多点(按多点的结构)
++----------------------------
+*/
+Map.prototype.addMultiPoint = function(pointArr){
+	for(var i = 0; i < pointArr.length; i++){
+		var point = new this.Point(pointArr[i][0], pointArr[i][1]);
+		this.addPoint(point);
 	}
+}
+/*
++-----------------------------
++ 绘制多点(按GeoJSON格式)
+	{
+	  "type": "Feature",
+	  "geometry": {
+	    "type": "MultiPoint",
+	    "coordinates": [[135.5, 53],[110,34]]
+	  },
+	  "properties": {
+	    "name": "XXX"
+	  }
+	}
++-----------------------------
+*/
+Map.prototype.drawMultiPoint = function(geo_multiPoint){
+	var pointArr = geo_multiPoint.geometry.coordinates;
+	this.addMultiPoint(pointArr);
 }
 
 
