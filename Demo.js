@@ -1,4 +1,9 @@
 window.onload = function() {
+	var map = new Map('map');
+	map.getPosition(function(data){
+		document.getElementById('show_lnglat').innerHTML = '当前经纬度为:' + data.lng + ',' + data.lat;
+	});
+
 	var point = {
 	  "type": "Feature",
 	  "geometry": {
@@ -9,11 +14,9 @@ window.onload = function() {
 	    "name": "XXX"
 	  }
 	};
-	var map = new Map('map');
-	map.getPosition(function(data){
-		document.getElementById('show_lnglat').innerHTML = '当前经纬度为:' + data.lng + ',' + data.lat;
-	});
+
 	map.drawPoint(point);
+	
 	var mpoint = {
 	  "type": "Feature",
 	  "geometry": {
@@ -27,8 +30,12 @@ window.onload = function() {
 	map.drawMultiPoint(mpoint);
 }
 
-//--------------------------map---------------------------------
-//Map类
+/*
++-------------------------------------------------------
++ Map类
++ 主类
++-------------------------------------------------------
+*/
 var Map = function(div) {
 	var div = document.getElementById(div);
 	this.width = 600;
@@ -47,22 +54,31 @@ var Map = function(div) {
 	this.maxLat = 53;
 	this.minLat = 3;
 };
-
-//设置地图边界
+/*
++----------------------------
++ 设置地图边界
++----------------------------
+*/
 Map.prototype.bounds = function(maxLng, minLng, maxLat, minLat){
 	this.maxLng = maxLng || 135.5;
 	this.minLng = minLng || 73;
 	this.maxLat = maxLat || 53;
 	this.minLat = minLat || 3;
 }
-
-//设置canvas大小
+/*
++----------------------------
++ 设置canvas大小
++----------------------------
+*/
 Map.prototype.setCanvas = function(canvas){
 	canvas.width = this.width;
 	canvas.height = this.height;
 }
-
-//给canvas 添加事件
+/*
++----------------------------
++ 获取鼠标的位置(经纬度)
++----------------------------
+*/
 Map.prototype.getPosition = function(callback){
 	var bounds = this.canvas.getBoundingClientRect();
 	var width = this.width;
@@ -82,9 +98,11 @@ Map.prototype.getPosition = function(callback){
 		callback(lnglat);
 	}
 }
-
-//经纬度转屏幕坐标
-//静态方法
+/*
++----------------------------
++ 经纬度转屏幕坐标 静态方法
++----------------------------
+*/
 Map.lngLat2XY = function(width, height, lng, lat, maxLng, minLng, maxLat, minLat){
 	var scaleX = ((maxLng - minLng)*3600) / width; 
 	var scaleY = ((maxLat - minLat)*3600) / height; 
@@ -92,9 +110,11 @@ Map.lngLat2XY = function(width, height, lng, lat, maxLng, minLng, maxLat, minLat
 	var y = (maxLat - lat)*3600/scaleY;
 	return {x: x, y: y};
 }
-
-//屏幕坐标转经纬度坐标
-//静态方法
+/*
++----------------------------
++ 屏幕坐标转经纬度坐标 静态方法
++----------------------------
+*/
 Map.xy2LngLat = function(width, height, x, y, maxLng, minLng, maxLat, minLat){
  	var scaleX = ((maxLng - minLng)*3600) / width; 
  	var scaleY = ((maxLat - minLat)*3600) / height; 
