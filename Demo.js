@@ -154,6 +154,7 @@ Map.xy2LngLat = function(width, height, x, y, maxLng, minLng, maxLat, minLat){
 Map.prototype.zoomTo = function(zoom, map){
 	//重绘之前清除矩形
 	this.context.clearRect(-(this.width/2), -(this.height/2), this.width, this.height);
+	console.log(zoom);
 	this.context.scale(zoom, zoom); //控制缩放
 	this.showMap(map); //绘制地图
 }

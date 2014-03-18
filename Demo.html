@@ -19,8 +19,27 @@
 			// 	map.zoomTo(0.5,map);
 			// }
 			window.onload = function() {
-				var map = new Map('map');
+				map = new Map('map');
+				map.zoomTo(0.2,map);
 				map.zoomTo(1,map);
+				console.log('09998');
+			}
+			function doBig(){
+				var fso, f1, ts, s;
+			   var ForReading = 1;
+			   fso = new ActiveXObject("Scripting.FileSystemObject");
+			   // f1 = fso.CreateTextFile("D:\\1.txt", true);
+			   // // 写一行。
+			   // Response.Write("Writing file <br>");
+			   // f1.WriteLine("Hello World");
+			   // f1.WriteBlankLines(1);
+			   // f1.Close();
+			   // 读取文件的内容。
+			   // Response.Write("Reading file <br>");
+			   ts = fso.OpenTextFile("D:\\1.txt", ForReading);
+			   s = ts.ReadLine();
+			   alert(s);
+			   ts.Close();
 			}
 		</script>
 	</head>
