@@ -62,7 +62,7 @@ var Map = function(div) {
 		this.setCanvas(this.canvas); //设置canvas大小
 		this.context = this.canvas.getContext("2d"); //获取绘图环境
 		this.context.translate(this.width/2,this.height/2);//将中心放到画布中心
-		// this.context.rotate(180*Math.PI/180);
+	    //this.context.scale(0.3,0.3); //缩放
 	}
 	this.maxLng = 135.5; 
 	this.minLng = 73;   
@@ -167,7 +167,6 @@ Map.prototype.Point = function(x, y){
 Map.prototype.addPoint = function(point){
 	var xy = Map.lngLat2XY(this.width, this.height, point.x, point.y, 
 		this.maxLng, this.minLng, this.maxLat, this.minLat);
-	console.log(xy);
 	var x = xy.x;
 	var y = xy.y;
 	this.context.fillStyle = "#FF0000";
@@ -262,7 +261,6 @@ Map.prototype.addLine = function(line){
 	this.context.lineWidth=3;
 	this.context.moveTo(xy1.x,xy1.y);
 	this.context.lineTo(xy2.x,xy2.y);
-	this.context.scale(2,2);
 	this.context.stroke();
 }
 /*
