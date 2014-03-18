@@ -3,7 +3,8 @@ window.onload = function() {
 	map.getPosition(function(data){
 		document.getElementById('show_lnglat').innerHTML = '当前经纬度为:' + data.lng + ',' + data.lat;
 	});
-
+	//var point = new map.Point(90,25);
+	//map.addPoint(point);
 	var point = {
 	  "type": "Feature",
 	  "geometry": {
@@ -60,7 +61,7 @@ var Map = function(div) {
 		this.div.appendChild(this.canvas); //添加canvas标签
 		this.setCanvas(this.canvas); //设置canvas大小
 		this.context = this.canvas.getContext("2d"); //获取绘图环境
-		// this.context.translate(this.width/2,this.height/2);后期考虑
+		this.context.translate(this.width/2,this.height/2);//将中心放到画布中心
 		// this.context.rotate(180*Math.PI/180);
 	}
 	this.maxLng = 135.5; 
@@ -117,11 +118,22 @@ Map.prototype.getPosition = function(callback){
 + 经纬度转屏幕坐标 静态方法
 +----------------------------
 */
+// Map.lngLat2XY = function(width, height, lng, lat, maxLng, minLng, maxLat, minLat){
+// 	var scaleX = ((maxLng - minLng)*3600) / width; 
+// 	var scaleY = ((maxLat - minLat)*3600) / height; 
+// 	var x = (lng - minLng)*3600/scaleX;
+// 	var y = (maxLat - lat)*3600/scaleY;
+// 	return {x: x, y: y};
+// }
+
 Map.lngLat2XY = function(width, height, lng, lat, maxLng, minLng, maxLat, minLat){
 	var scaleX = ((maxLng - minLng)*3600) / width; 
 	var scaleY = ((maxLat - minLat)*3600) / height; 
-	var x = (lng - minLng)*3600/scaleX;
-	var y = (maxLat - lat)*3600/scaleY;
+	var midLng = (maxLng + minLng) / 2;//中央经线 x轴中线
+	var midLat = (maxLat + minLat) / 2;//中央纬线 y轴中线
+
+	var x = (lng - midLng)*3600/scaleX;
+	var y = (midLat - lat)*3600/scaleY;
 	return {x: x, y: y};
 }
 /*
@@ -155,6 +167,7 @@ Map.prototype.Point = function(x, y){
 Map.prototype.addPoint = function(point){
 	var xy = Map.lngLat2XY(this.width, this.height, point.x, point.y, 
 		this.maxLng, this.minLng, this.maxLat, this.minLat);
+	console.log(xy);
 	var x = xy.x;
 	var y = xy.y;
 	this.context.fillStyle = "#FF0000";
