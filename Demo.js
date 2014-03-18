@@ -60,6 +60,8 @@ var Map = function(div) {
 		this.div.appendChild(this.canvas); //添加canvas标签
 		this.setCanvas(this.canvas); //设置canvas大小
 		this.context = this.canvas.getContext("2d"); //获取绘图环境
+		// this.context.translate(this.width/2,this.height/2);后期考虑
+		// this.context.rotate(180*Math.PI/180);
 	}
 	this.maxLng = 135.5; 
 	this.minLng = 73;   
