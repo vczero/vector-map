@@ -157,7 +157,6 @@ Map.prototype.addPoint = function(point){
 		this.maxLng, this.minLng, this.maxLat, this.minLat);
 	var x = xy.x;
 	var y = xy.y;
-
 	this.context.fillStyle = "#FF0000";
 	this.context.beginPath();
 	this.context.arc(x,y,point.size,0,Math.PI*2,true);
@@ -250,6 +249,7 @@ Map.prototype.addLine = function(line){
 	this.context.lineWidth=3;
 	this.context.moveTo(xy1.x,xy1.y);
 	this.context.lineTo(xy2.x,xy2.y);
+	this.context.scale(2,2);
 	this.context.stroke();
 }
 /*
