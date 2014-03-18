@@ -14,34 +14,19 @@
 		</style>
 		<script type="text/javascript" src="Demo.js"></script>
 		<script type="text/javascript">
-			// var map = new Map('map');
-			// map.zoomTo(1,map);
-			// function doBig(){
-			// 	map.zoomTo(0.5,map);
-			// }
 			window.onload = function() {
 				map = new Map('map');
-				// map.zoomTo(0.2,map);
 				map.zoomTo(1,map);
-				console.log('09998');
+				
 			}
 			function doBig(){
-				var fso, f1, ts, s;
-			   var ForReading = 1;
-			   fso = new ActiveXObject("Scripting.FileSystemObject");
-			   // f1 = fso.CreateTextFile("D:\\1.txt", true);
-			   // // 写一行。
-			   // Response.Write("Writing file <br>");
-			   // f1.WriteLine("Hello World");
-			   // f1.WriteBlankLines(1);
-			   // f1.Close();
-			   // 读取文件的内容。
-			   // Response.Write("Reading file <br>");
-			   ts = fso.OpenTextFile("D:\\1.txt", ForReading);
-			   s = ts.ReadLine();
-			   alert(s);
-			   ts.Close();
+				map.zoomTo(1.1,map);
 			}
+
+			function doSmall(){
+				map.zoomTo(0.9,map);
+			}
+			
 		</script>
 	</head>
 	<body style="font-size:12px;">
@@ -50,7 +35,7 @@
 		<div style="width:600px;height:60px;border:1px solid #CCCCCC;border-top:0; margin-left:auto;margin-right:auto;">
 			<span id="show_lnglat">当前经纬度为：</span><br/><br/>
 			<input id = "big" class="btn" type="button" value = "放大" onclick="doBig()" />
-			<input id = "small" class="btn" type="button" value = "缩小" />
+			<input id = "small" class="btn" type="button" value = "缩小" onclick="doSmall()" />
 			<input class="btn" type="button" value = "左移" />
 			<input class="btn" type="button" value = "右移" />
 			<input class="btn" type="button" value = "画点" />

@@ -9,7 +9,7 @@ var Map = function(div) {
 	var div = document.getElementById(div);
 	this.width = 600;
 	this.height = 400;
-	this.zoom = 1;//默认不缩放
+
 	if(div){
 		this.div = div;
 		this.width = parseInt(div.style.width);
@@ -32,6 +32,7 @@ Map.prototype.showMap = function(map){
 	});
 
 	//获取服务的数据
+	//绘制全国2019个县的数据
 	var url='http://127.0.0.1:3000/point';
    	$.ajax({
 	     url:url,
@@ -44,7 +45,6 @@ Map.prototype.showMap = function(map){
 	     	for(var i = 0; i < geoinfo.length; i++){
 	     		map.drawPoint(geoinfo[i]);
 	     	}
-	       	// console.log(data);
 	     },
      	error:function(XMLHttpRequest, textStatus, errorThrown) {
        		console.log(XMLHttpRequest);
@@ -134,7 +134,7 @@ Map.prototype.getPosition = function(callback){
 }
 /*
 +----------------------------
-+ 经纬度转屏幕坐标 静态方法
++ 经纬度转屏幕坐标(左上角为原点) 静态方法
 +----------------------------
 */
 // Map.lngLat2XY = function(width, height, lng, lat, maxLng, minLng, maxLat, minLat){
@@ -145,6 +145,11 @@ Map.prototype.getPosition = function(callback){
 // 	return {x: x, y: y};
 // }
 
+/*
++----------------------------
++ 经纬度转屏幕坐标(中心为原点) 静态方法
++----------------------------
+*/
 Map.lngLat2XY = function(width, height, lng, lat, maxLng, minLng, maxLat, minLat){
 	var scaleX = ((maxLng - minLng)*3600) / width; 
 	var scaleY = ((maxLat - minLat)*3600) / height; 
@@ -175,9 +180,9 @@ Map.xy2LngLat = function(width, height, x, y, maxLng, minLng, maxLat, minLat){
 Map.prototype.zoomTo = function(zoom, map){
 	//重绘之前清除矩形
 	this.context.clearRect(-(this.width/2), -(this.height/2), this.width, this.height);
-	console.log(zoom);
 	this.context.scale(zoom, zoom); //控制缩放
 	this.showMap(map); //绘制地图
+	this.context.scale(1, 1);
 }
 /*
 +-------------------------------------------------------
