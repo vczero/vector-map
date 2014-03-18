@@ -1,4 +1,4 @@
-
+document.write("<script language=javascript src='jquery.js'></script>");
 /*
 +-------------------------------------------------------
 + Map类
@@ -30,42 +30,63 @@ Map.prototype.showMap = function(map){
 	map.getPosition(function(data){
 		document.getElementById('show_lnglat').innerHTML = '当前经纬度为:' + data.lng + ',' + data.lat;
 	});
-	var point = {
-	  "type": "Feature",
-	  "geometry": {
-	    "type": "Point",
-	    "coordinates": [135.5, 53]
-	  },
-	  "properties": {
-	    "name": "XXX"
-	  }
-	};
 
-	map.drawPoint(point);
+	//获取服务的数据
+	var url='http://127.0.0.1:3000/point';
+   	$.ajax({
+	     url:url,
+	     data:'',
+	     dataType:'jsonp',
+	     processData: false, 
+	     type:'get',
+	     success:function callback(data){
+	     	var geoinfo = data.geoinfo;
+	     	for(var i = 0; i < geoinfo.length; i++){
+	     		map.drawPoint(geoinfo[i]);
+	     	}
+	       	// console.log(data);
+	     },
+     	error:function(XMLHttpRequest, textStatus, errorThrown) {
+       		console.log(XMLHttpRequest);
+     }});
+
+
+	// var point = {
+	//   "type": "Feature",
+	//   "geometry": {
+	//     "type": "Point",
+	//     "coordinates": [135.5, 53]
+	//   },
+	//   "properties": {
+	//     "name": "XXX"
+	//   }
+	// };
+
+	// map.drawPoint(point);
 	
-	var mpoint = {
-	  "type": "Feature",
-	  "geometry": {
-	    "type": "MultiPoint",
-	    "coordinates": [[125.5, 13],[110,34]]
-	  },
-	  "properties": {
-	    "name": "XXX"
-	  }
-	};
-	map.drawMultiPoint(mpoint);
+	// var mpoint = {
+	//   "type": "Feature",
+	//   "geometry": {
+	//     "type": "MultiPoint",
+	//     "coordinates": [[125.5, 13],[110,34]]
+	//   },
+	//   "properties": {
+	//     "name": "XXX"
+	//   }
+	// };
+	// map.drawMultiPoint(mpoint);
 
-	var line = {
-	  "type": "Feature",
-	  "geometry": {
-	    "type": "MultiPoint",
-	    "coordinates": [[135.5, 53],[110,34]]
-	  },
-	  "properties": {
-	    "name": "XXX"
-	  }
-	};
-	map.drawLine(line);
+	// var line = {
+	//   "type": "Feature",
+	//   "geometry": {
+	//     "type": "MultiPoint",
+	//     "coordinates": [[135.5, 53],[110,34]]
+	//   },
+	//   "properties": {
+	//     "name": "XXX"
+	//   }
+	// };
+	// map.drawLine(line);
 }
 /*
 +----------------------------
@@ -167,7 +188,7 @@ Map.prototype.zoomTo = function(zoom, map){
 Map.prototype.Point = function(x, y){
 	this.x = x;
 	this.y = y;
-	this.size = 10;
+	this.size = 3;
 };
 /*
 +----------------------------

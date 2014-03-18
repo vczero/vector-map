@@ -19,14 +19,14 @@ for(var i = 0; i < obj.worksheets[0].data.length; i++){
 		  	}
 		};
 	}
-	console.log(point);
 	jsonText.geoinfo.push(point);
 }
 
 var str = JSON.stringify(jsonText);
 
+
 var fs = require('fs');
-fs.writeFile('_point.txt',str , function (err) {
+fs.writeFile('_point.json',str , function (err) {
   if (err) throw err;
   console.log('转化完成'); //文件被保存
 });
