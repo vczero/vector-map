@@ -1,10 +1,35 @@
-window.onload = function() {
-	var map = new Map('map');
+
+/*
++-------------------------------------------------------
++ Map类
++ 主类
++-------------------------------------------------------
+*/
+var Map = function(div) {
+	var div = document.getElementById(div);
+	this.width = 600;
+	this.height = 400;
+	this.zoom = 1;//默认不缩放
+	if(div){
+		this.div = div;
+		this.width = parseInt(div.style.width);
+		this.height = parseInt(div.style.height);
+		this.canvas = document.createElement("canvas"); //创建canvas标签
+		this.div.appendChild(this.canvas); //添加canvas标签
+		this.setCanvas(this.canvas); //设置canvas大小
+		this.context = this.canvas.getContext("2d"); //获取绘图环境
+		this.context.translate(this.width/2,this.height/2);//将中心放到画布中心
+	}
+	this.maxLng = 135.5; 
+	this.minLng = 73;   
+	this.maxLat = 53;
+	this.minLat = 3;
+};
+
+Map.prototype.showMap = function(map){
 	map.getPosition(function(data){
 		document.getElementById('show_lnglat').innerHTML = '当前经纬度为:' + data.lng + ',' + data.lat;
 	});
-	//var point = new map.Point(90,25);
-	//map.addPoint(point);
 	var point = {
 	  "type": "Feature",
 	  "geometry": {
@@ -42,33 +67,6 @@ window.onload = function() {
 	};
 	map.drawLine(line);
 }
-
-/*
-+-------------------------------------------------------
-+ Map类
-+ 主类
-+-------------------------------------------------------
-*/
-var Map = function(div) {
-	var div = document.getElementById(div);
-	this.width = 600;
-	this.height = 400;
-	if(div){
-		this.div = div;
-		this.width = parseInt(div.style.width);
-		this.height = parseInt(div.style.height);
-		this.canvas = document.createElement("canvas"); //创建canvas标签
-		this.div.appendChild(this.canvas); //添加canvas标签
-		this.setCanvas(this.canvas); //设置canvas大小
-		this.context = this.canvas.getContext("2d"); //获取绘图环境
-		this.context.translate(this.width/2,this.height/2);//将中心放到画布中心
-	    //this.context.scale(0.3,0.3); //缩放
-	}
-	this.maxLng = 135.5; 
-	this.minLng = 73;   
-	this.maxLat = 53;
-	this.minLat = 3;
-};
 /*
 +----------------------------
 + 设置地图边界
@@ -147,6 +145,17 @@ Map.xy2LngLat = function(width, height, x, y, maxLng, minLng, maxLat, minLat){
  	var lng = x * scaleX/3600 + minLng;
  	var lat = maxLat - y*scaleY/3600; 
  	return {lng: lng, lat: lat};
+}
+/*
++----------------------------
++ 缩放
++----------------------------
+*/
+Map.prototype.zoomTo = function(zoom, map){
+	//重绘之前清除矩形
+	this.context.clearRect(-(this.width/2), -(this.height/2), this.width, this.height);
+	this.context.scale(zoom, zoom); //控制缩放
+	this.showMap(map); //绘制地图
 }
 /*
 +-------------------------------------------------------
@@ -286,4 +295,3 @@ Map.prototype.drawLine = function(geo_line){
 	this.addLine(new this.Line(point1,point2));
 }
 
- 
