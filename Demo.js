@@ -193,7 +193,7 @@ Map.prototype.zoomTo = function(zoom, map){
 Map.prototype.Point = function(x, y){
 	this.x = x;
 	this.y = y;
-	this.size = 3;
+	this.size = 2;
 };
 /*
 +----------------------------
