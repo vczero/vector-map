@@ -1,3 +1,4 @@
+//引用JQUERY
 document.write("<script language=javascript src='jquery.js'></script>");
 /*
 +-------------------------------------------------------
@@ -22,7 +23,7 @@ var Map = function(div) {
 	}
 	this.maxLng = 135.5; 
 	this.minLng = 73;   
-	this.maxLat = 53;
+	this.maxLat = 55;
 	this.minLat = 3;
 };
 
@@ -65,6 +66,8 @@ Map.prototype.showMap = function(map){
      	error:function(XMLHttpRequest, textStatus, errorThrown) {
        		console.log(XMLHttpRequest);
      }});
+
+   	// map.addPolygon();
 }
 /*
 +----------------------------
@@ -74,7 +77,7 @@ Map.prototype.showMap = function(map){
 Map.prototype.bounds = function(maxLng, minLng, maxLat, minLat){
 	this.maxLng = maxLng || 135.5;
 	this.minLng = minLng || 73;
-	this.maxLat = maxLat || 53;
+	this.maxLat = maxLat || 55;
 	this.minLat = minLat || 3;
 }
 /*
@@ -271,7 +274,7 @@ Map.prototype.addLine = function(line){
 				  this.maxLng, this.minLng, this.maxLat, this.minLat);
 		this.context.beginPath();
 		this.context.strokeStyle ="#1081D6";
-		this.context.lineWidth = 1;
+		this.context.lineWidth = 0.5;
 		this.context.moveTo(xy1.x, xy1.y);
 		for(var i = 1; i < line.length; i++){
 			var mxy = Map.lngLat2XY(this.width, this.height, line[i][0], line[i][1], 
@@ -300,5 +303,35 @@ Map.prototype.addLine = function(line){
 Map.prototype.drawLine = function(geo_line){
 	var coordinates = geo_line.geometry.coordinates;
 	this.addLine(coordinates);
+}
+
+/*
++----------------------------
++ 添加多边形(按多边形的结构)
++----------------------------
+*/
+Map.prototype.addPolygon = function(polygon){
+	this.context.beginPath();
+	this.context.strokeStyle ="#FFF";
+	this.context.lineWidth = 0.5;
+	this.context.moveTo(100, 0);
+	this.context.lineTo(70, 60);
+	this.context.lineTo(-20, 90);
+	this.context.fill();
+}
+
+/*
++------------------------------------
++ 绘制多边形(按Geo_JSON格式)
+	{ "type": "Polygon",
+	    "coordinates": [
+	    	[ [100.0, 0.0], [101.0, 0.0], [101.0, 1.0], [100.0, 1.0], [100.0, 0.0] ],
+	    	[ [100.2, 0.2], [100.8, 0.2], [100.8, 0.8], [100.2, 0.8], [100.2, 0.2] ]
+	    ]
+    }
++------------------------------------
+*/
+Map.prototype.drawPolygon = function(geo_polygon){
+
 }
 
