@@ -33,9 +33,9 @@ Map.prototype.showMap = function(map){
 
 	//获取服务的数据
 	//绘制全国2019个县的数据
-	var url='http://127.0.0.1:3000/point';
+	var pointUrl='http://127.0.0.1:3000/point';
    	$.ajax({
-	     url:url,
+	     url:pointUrl,
 	     data:'',
 	     dataType:'jsonp',
 	     processData: false, 
@@ -51,42 +51,20 @@ Map.prototype.showMap = function(map){
      }});
 
 
-	// var point = {
-	//   "type": "Feature",
-	//   "geometry": {
-	//     "type": "Point",
-	//     "coordinates": [135.5, 53]
-	//   },
-	//   "properties": {
-	//     "name": "XXX"
-	//   }
-	// };
-
-	// map.drawPoint(point);
-	
-	// var mpoint = {
-	//   "type": "Feature",
-	//   "geometry": {
-	//     "type": "MultiPoint",
-	//     "coordinates": [[125.5, 13],[110,34]]
-	//   },
-	//   "properties": {
-	//     "name": "XXX"
-	//   }
-	// };
-	// map.drawMultiPoint(mpoint);
-
-	// var line = {
-	//   "type": "Feature",
-	//   "geometry": {
-	//     "type": "MultiPoint",
-	//     "coordinates": [[135.5, 53],[110,34]]
-	//   },
-	//   "properties": {
-	//     "name": "XXX"
-	//   }
-	// };
-	// map.drawLine(line);
+   	//绘制全国边界数据
+   	var pointUrl='http://127.0.0.1:3000/line';
+   	$.ajax({
+	     url:pointUrl,
+	     data:'',
+	     dataType:'jsonp',
+	     processData: false, 
+	     type:'get',
+	     success:function callback(data){
+	     	map.drawLine(data);
+	     },
+     	error:function(XMLHttpRequest, textStatus, errorThrown) {
+       		console.log(XMLHttpRequest);
+     }});
 }
 /*
 +----------------------------
@@ -286,18 +264,23 @@ Map.prototype.Line = function(point1, point2){
 +----------------------------
 */
 Map.prototype.addLine = function(line){
-	var point1 = line.point1;
-	var point2 = line.point2;
-	var xy1 = Map.lngLat2XY(this.width, this.height, point1.x, point1.y, 
-		this.maxLng, this.minLng, this.maxLat, this.minLat);
-	var xy2 = Map.lngLat2XY(this.width, this.height, point2.x, point2.y, 
-		this.maxLng, this.minLng, this.maxLat, this.minLat);
-	this.context.beginPath();
-	this.context.strokeStyle ="#FFC56B";
-	this.context.lineWidth=3;
-	this.context.moveTo(xy1.x,xy1.y);
-	this.context.lineTo(xy2.x,xy2.y);
-	this.context.stroke();
+	//根据点的个数绘制
+	if(line.length > 0){
+		var startPoint = line[0];
+		var xy1 = Map.lngLat2XY(this.width, this.height, startPoint[0], startPoint[1], 
+				  this.maxLng, this.minLng, this.maxLat, this.minLat);
+		this.context.beginPath();
+		this.context.strokeStyle ="#1081D6";
+		this.context.lineWidth = 1;
+		this.context.moveTo(xy1.x, xy1.y);
+		for(var i = 1; i < line.length; i++){
+			var mxy = Map.lngLat2XY(this.width, this.height, line[i][0], line[i][1], 
+					  this.maxLng, this.minLng, this.maxLat, this.minLat);
+			this.context.lineTo(mxy.x, mxy.y);
+		}
+		this.context.stroke();
+	}
+	// this.context.lineTo(xy2.x,xy2.y);
 }
 /*
 +-----------------------------
@@ -316,9 +299,6 @@ Map.prototype.addLine = function(line){
 */
 Map.prototype.drawLine = function(geo_line){
 	var coordinates = geo_line.geometry.coordinates;
-	var point1 = new this.Point(coordinates[0][0],coordinates[0][1]);
-	var point2 = new this.Point(coordinates[1][0],coordinates[1][1]);
-	var line = new this.Line(point1,point2);
-	this.addLine(new this.Line(point1,point2));
+	this.addLine(coordinates);
 }
 
