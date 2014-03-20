@@ -4,7 +4,7 @@ var _point = require('./_point');
 var _line_all = require('./_line_all');
 var _hainan = require('./_hainan');
 var _taiwan = require('./_taiwan');
-
+var _province = require('./_province');
 
 http.createServer(function (request, response) {
   	response.writeHead(200, {'Content-Type': 'text/javascript;charset=utf-8'});
@@ -36,6 +36,14 @@ http.createServer(function (request, response) {
   		//中国台湾
   		else if(request.url.indexOf('/taiwan') >= 0){
   			var str = JSON.stringify(_taiwan);
+	  		var url =  require('url').parse(request.url, true);
+	  		console.log(url.query.callback);
+	  		str =  url.query.callback + '(' + str + ')';
+	  		response.end(str);
+  		}
+  		//中国省份
+  		else if(request.url.indexOf('/province') >= 0){
+  			var str = JSON.stringify(_province);
 	  		var url =  require('url').parse(request.url, true);
 	  		console.log(url.query.callback);
 	  		str =  url.query.callback + '(' + str + ')';

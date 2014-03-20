@@ -32,6 +32,25 @@ Map.prototype.showMap = function(map){
 		document.getElementById('show_lnglat').innerHTML = '当前经纬度为:' + data.lng + ',' + data.lat;
 	});
 
+	//绘制省份
+   	var pointUrl='http://127.0.0.1:3000/province';
+   	$.ajax({
+	     url:pointUrl,
+	     data:'',
+	     dataType:'jsonp',
+	     processData: false, 
+	     type:'get',
+	     success:function callback(data){
+	     	var features = data.features;
+	     	for(var i = 0; i < features.length; i++){
+	     		map.drawPolygon(features[i]);
+	     	}
+	     	
+	     },
+     	error:function(XMLHttpRequest, textStatus, errorThrown) {
+       		console.log(XMLHttpRequest);
+     }});
+
 	//获取服务的数据
 	//绘制全国2019个县的数据
 	var pointUrl='http://127.0.0.1:3000/point';
@@ -214,7 +233,7 @@ Map.prototype.addPoint = function(point){
 		this.maxLng, this.minLng, this.maxLat, this.minLat);
 	var x = xy.x;
 	var y = xy.y;
-	this.context.fillStyle = "#FF0000";
+	this.context.fillStyle = "#E12D2D";
 	this.context.beginPath();
 	this.context.arc(x,y,point.size,0,Math.PI*2,true);
 	this.context.closePath();
@@ -309,14 +328,15 @@ Map.prototype.addLine = function(line){
 					  this.maxLng, this.minLng, this.maxLat, this.minLat);
 			this.context.lineTo(mxy.x, mxy.y);
 		}
+		this.context.closePath();
 		this.context.stroke();
 	}
 	// this.context.lineTo(xy2.x,xy2.y);
 }
 /*
 +-----------------------------
-+ 绘制多点(按GeoJSON格式)
-	{
+
++ 绘制多点(按GeoJSON格式	{
 		"type": "Feature",
 		"geometry": {
 		    "type": "LineString",
@@ -340,11 +360,19 @@ Map.prototype.drawLine = function(geo_line){
 */
 Map.prototype.addPolygon = function(polygon){
 	this.context.beginPath();
-	this.context.strokeStyle ="#FFF";
-	this.context.lineWidth = 0.5;
-	this.context.moveTo(100, 0);
-	this.context.lineTo(70, 60);
-	this.context.lineTo(-20, 90);
+	this.context.strokeStyle ="#C2DDB6";
+	this.context.lineWidth = 1;
+	if(polygon.length > 0){
+		var xy1 = Map.lngLat2XY(this.width, this.height, polygon[0][0], polygon[0][1], 
+				  this.maxLng, this.minLng, this.maxLat, this.minLat);
+		this.context.moveTo(xy1.x, xy1.y);
+	}
+	for(var i = 1; i < polygon.length; i++){
+		var mxy = Map.lngLat2XY(this.width, this.height, polygon[i][0], polygon[i][1], 
+				  this.maxLng, this.minLng, this.maxLat, this.minLat);
+		this.context.lineTo(mxy.x, mxy.y);
+	}
+	this.context.closePath();
 	this.context.fill();
 }
 
@@ -360,6 +388,7 @@ Map.prototype.addPolygon = function(polygon){
 +------------------------------------
 */
 Map.prototype.drawPolygon = function(geo_polygon){
-
+	var coordinates = geo_polygon.geometry.coordinates;
+	this.addPolygon(coordinates[0]);
 }
 
