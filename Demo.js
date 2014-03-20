@@ -67,7 +67,35 @@ Map.prototype.showMap = function(map){
        		console.log(XMLHttpRequest);
      }});
 
-   	// map.addPolygon();
+    //绘制海南
+   	var pointUrl='http://127.0.0.1:3000/hainan';
+   	$.ajax({
+	     url:pointUrl,
+	     data:'',
+	     dataType:'jsonp',
+	     processData: false, 
+	     type:'get',
+	     success:function callback(data){
+	     	map.drawLine(data);
+	     },
+     	error:function(XMLHttpRequest, textStatus, errorThrown) {
+       		console.log(XMLHttpRequest);
+     }});
+
+   	 //绘制台湾
+   	var pointUrl='http://127.0.0.1:3000/taiwan';
+   	$.ajax({
+	     url:pointUrl,
+	     data:'',
+	     dataType:'jsonp',
+	     processData: false, 
+	     type:'get',
+	     success:function callback(data){
+	     	map.drawLine(data);
+	     },
+     	error:function(XMLHttpRequest, textStatus, errorThrown) {
+       		console.log(XMLHttpRequest);
+     }});
 }
 /*
 +----------------------------
@@ -273,7 +301,7 @@ Map.prototype.addLine = function(line){
 		var xy1 = Map.lngLat2XY(this.width, this.height, startPoint[0], startPoint[1], 
 				  this.maxLng, this.minLng, this.maxLat, this.minLat);
 		this.context.beginPath();
-		this.context.strokeStyle ="#1081D6";
+		this.context.strokeStyle ="#3879D9";
 		this.context.lineWidth = 0.5;
 		this.context.moveTo(xy1.x, xy1.y);
 		for(var i = 1; i < line.length; i++){
