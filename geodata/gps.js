@@ -14,9 +14,11 @@ for(var i = 0; i < obj.worksheets[0].data.length; i++){
 		    	"coordinates": [obj.worksheets[0].data[i][3].value, obj.worksheets[0].data[i][4].value]
 		  	},
 		  	"properties": {
-		    	"name": obj.worksheets[0].data[i][2].value + obj.worksheets[0].data[i][0].value
+		    	"name": ""
 		  	}
 		};
+		if(i % 100 === 0)
+			point.properties.name = obj.worksheets[0].data[i][2].value + obj.worksheets[0].data[i][0].value;
 	}
 	jsonText.geoinfo.push(point);
 }
