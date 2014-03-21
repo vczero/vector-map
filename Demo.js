@@ -137,6 +137,7 @@ Map.prototype.showMap = function(map){
 	     		}
 	     		if(feature.geometry.type == 'Point'){
 	     			map.drawPoint(feature);
+	     			map.drawText(feature);
 	     		}
 	     	}
 	     },
@@ -390,7 +391,7 @@ Map.prototype.addPolygon = function(polygon){
 	this.context.fillStyle = '#F1EEE8';
 	this.context.strokeStyle = '#D8B1D2';
 	this.context.beginPath();
-	this.context.lineWidth = 1;
+	this.context.lineWidth = 0.5;
 	if(polygon.length > 0){
 		var xy1 = Map.lngLat2XY(this.width, this.height, polygon[0][0], polygon[0][1], 
 				  this.maxLng, this.minLng, this.maxLat, this.minLat);
@@ -420,5 +421,33 @@ Map.prototype.addPolygon = function(polygon){
 Map.prototype.drawPolygon = function(geo_polygon){
 	var coordinates = geo_polygon.geometry.coordinates;
 	this.addPolygon(coordinates[0]);
+}
+
+/*
++----------------------------
++ 绘制文本
++----------------------------
+*/
+Map.prototype.addText = function(text){
+	this.context.font='2px';
+	this.context.fillStyle='#060606';
+	this.context.fillText(text.text,text.x,text.y);
+}
+/*
++------------------------------------
++ 绘制文本(按Geo_JSON格式)
++------------------------------------
+*/
+
+Map.prototype.drawText = function(feature){
+	var text = {};
+    //转化坐标
+    var coordinates = feature.geometry.coordinates;
+	var xy = Map.lngLat2XY(this.width, this.height, coordinates[0], coordinates[1], 
+				  this.maxLng, this.minLng, this.maxLat, this.minLat);
+	text.text = feature.properties.name;
+	text.x = xy.x;
+	text.y = xy.y;
+	this.addText(text);
 }
 
