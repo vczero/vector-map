@@ -5,9 +5,19 @@ var _line_all = require('./_line_all');
 var _hainan = require('./_hainan');
 var _taiwan = require('./_taiwan');
 var _province = require('./_province');
+var _allHome = require('./_allHome');
 
 http.createServer(function (request, response) {
   	response.writeHead(200, {'Content-Type': 'text/javascript;charset=utf-8'});
+
+      //获取全国边界数据
+      if(request.url.indexOf('/quanguodata/get') >= 0){
+        var str = JSON.stringify(_allHome);
+        var url =  require('url').parse(request.url, true);
+        console.log(url.query.callback);
+        str =  url.query.callback + '(' + str + ')';
+        response.end(str);
+      }
   		//全国点数据
   		if(request.url.indexOf('/point') >= 0){
   			var str = JSON.stringify(_point);

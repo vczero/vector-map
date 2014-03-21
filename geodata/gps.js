@@ -1,6 +1,5 @@
 var xlsx = require('node-xlsx');
-var obj = xlsx.parse('D:/Github/readGeoJSON/area.district.gbk.xlsx'); // parses a file
-
+var obj = xlsx.parse('area.district.gbk.xlsx'); //读取一个excel文件
 var jsonText = {};
 jsonText.geoinfo = [];
 jsonText.des = '数据提供:数据堂全国2019个区县的GPS经纬度信息转化而来;转化:王利华';

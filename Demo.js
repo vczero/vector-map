@@ -45,7 +45,6 @@ Map.prototype.showMap = function(map){
 	     	for(var i = 0; i < features.length; i++){
 	     		map.drawPolygon(features[i]);
 	     	}
-	     	
 	     },
      	error:function(XMLHttpRequest, textStatus, errorThrown) {
        		console.log(XMLHttpRequest);
@@ -115,6 +114,35 @@ Map.prototype.showMap = function(map){
      	error:function(XMLHttpRequest, textStatus, errorThrown) {
        		console.log(XMLHttpRequest);
      }});
+
+   	// var pointUrl='http://127.0.0.1:3000/quanguodata/get';
+   	// $.ajax({
+	   //   url:pointUrl,
+	   //   data:'',
+	   //   dataType:'jsonp',
+	   //   processData: false, 
+	   //   type:'get',
+	   //   success:function callback(data){
+	   //   	var features = data.features;
+	   //   	for(var i = 0; i <features.length; i++){
+	   //   		var feature = features[i];
+	   //   		if(feature.geometry.type == 'Polygon'){
+	   //   			map.drawPolygon(feature);
+	   //   		}
+
+	   //   		if(feature.geometry.type == 'LineString'){
+	   //   			map.drawLine(feature);
+	   //   		}
+
+	   //   		if(feature.geometry.type == 'Point'){
+	   //   			map.drawPoint(feature);
+	   //   		}
+	     		
+	   //   	}
+	   //   },
+    //  	error:function(XMLHttpRequest, textStatus, errorThrown) {
+    //    		console.log(XMLHttpRequest);
+    //  }});
 }
 /*
 +----------------------------
@@ -319,8 +347,8 @@ Map.prototype.addLine = function(line){
 		var startPoint = line[0];
 		var xy1 = Map.lngLat2XY(this.width, this.height, startPoint[0], startPoint[1], 
 				  this.maxLng, this.minLng, this.maxLat, this.minLat);
-		this.context.beginPath();
 		this.context.strokeStyle ="#3879D9";
+		this.context.beginPath();
 		this.context.lineWidth = 0.5;
 		this.context.moveTo(xy1.x, xy1.y);
 		for(var i = 1; i < line.length; i++){
@@ -359,8 +387,8 @@ Map.prototype.drawLine = function(geo_line){
 +----------------------------
 */
 Map.prototype.addPolygon = function(polygon){
+	this.context.fillStyle ="#C2DDB6";
 	this.context.beginPath();
-	this.context.strokeStyle ="#C2DDB6";
 	this.context.lineWidth = 1;
 	if(polygon.length > 0){
 		var xy1 = Map.lngLat2XY(this.width, this.height, polygon[0][0], polygon[0][1], 

@@ -3,14 +3,14 @@ var fs = require('fs');
 var lineString = {
     "type": "Feature",
     "geometry": {
-      "type": "Point",
+      "type": "LineString",
       "coordinates":[]
     },
     "properties": {
       "name": ""
     }
 };
-//读取Excel数据
+
 fs.readFile('line_all.txt', function (err, data) {
     if (err) throw err;
     var dataStr = data.toString();
