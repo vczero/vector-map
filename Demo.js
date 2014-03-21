@@ -261,7 +261,7 @@ Map.prototype.addPoint = function(point){
 		this.maxLng, this.minLng, this.maxLat, this.minLat);
 	var x = xy.x;
 	var y = xy.y;
-	this.context.fillStyle = "#E12D2D";
+	this.context.fillStyle = "#FF0000";
 	this.context.beginPath();
 	this.context.arc(x,y,point.size,0,Math.PI*2,true);
 	this.context.closePath();
@@ -347,7 +347,7 @@ Map.prototype.addLine = function(line){
 		var startPoint = line[0];
 		var xy1 = Map.lngLat2XY(this.width, this.height, startPoint[0], startPoint[1], 
 				  this.maxLng, this.minLng, this.maxLat, this.minLat);
-		this.context.strokeStyle ="#3879D9";
+		this.context.strokeStyle ="#B3B3B3";
 		this.context.beginPath();
 		this.context.lineWidth = 0.5;
 		this.context.moveTo(xy1.x, xy1.y);
@@ -387,7 +387,8 @@ Map.prototype.drawLine = function(geo_line){
 +----------------------------
 */
 Map.prototype.addPolygon = function(polygon){
-	this.context.fillStyle ="#C2DDB6";
+	this.context.fillStyle = '#F1EEE8';
+	this.context.strokeStyle = '#D8B1D2';
 	this.context.beginPath();
 	this.context.lineWidth = 1;
 	if(polygon.length > 0){
@@ -401,7 +402,8 @@ Map.prototype.addPolygon = function(polygon){
 		this.context.lineTo(mxy.x, mxy.y);
 	}
 	this.context.closePath();
-	this.context.fill();
+	this.context.fill();//填充省份多边形
+	this.context.stroke();//将边界线绘制出来
 }
 
 /*
