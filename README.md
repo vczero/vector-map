@@ -4,6 +4,6 @@
 2、基于canvas.   
 
 #####全国2019个区县的GPS经纬度信息
-![GPS png](./pic/GPS.png)
+![map png](./pic/map.png)
 
 
