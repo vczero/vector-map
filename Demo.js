@@ -160,6 +160,7 @@ Map.prototype.showMap = function(map){
 	     			map.drawText(feature);
 	     		}
 	     	}
+	     	map.mouseZoomTo();
 	     },
      	error:function(XMLHttpRequest, textStatus, errorThrown) {
        		console.log(XMLHttpRequest);
@@ -523,6 +524,49 @@ Map.prototype.moveToRight = function(px){
 Map.prototype.panTo = function(px){
 	
 }
+/*
++------------------------------------
++ 基于鼠标滚轮缩放
++------------------------------------
+*/
+Map.prototype.mouseZoomTo = function(){
+	this.canvas.addEventListener('mousewheel', getScorll, false);
+	// 捕获鼠标动作
+	//这块的事件机制还没弄清
+	var _this = this; //接收当前的this对象
+	var currentZoom = this.zoom;
+	var scorll = 0;
+	function getScorll(e){
+		scorll += e.wheelDelta;
+		//除以120，计算缩放级数
+		//每次缩放0.1
+		var zoom = currentZoom + (scorll / 120) * 100 * 0.1;
+		if(zoom < 0){
+			zoom = 0;
+		}
+		_this.zoomTo(zoom); //解决this的传入问题
+	}
+}
+/*
++------------------------------------
++ 计算缩放级数(基于鼠标滚轮缩放)
++------------------------------------
+*/
+// Map.prototype.getScorll = function(e,scorll,_this){
+// 	scorll += e.wheelDelta || 0;
+// 	//除以120，计算缩放级数
+// 	//每次缩放0.2
+// 	var zoom = this.zoom + (scorll / 120) * 100 * 0.2;
+// 	console.log(zoom);
+// 	//this.zoomTo(zoom);
+// }
+/*
++------------------------------------
++ 计算缩放级数(基于鼠标双击 缩放)
++------------------------------------
+*/
+
+
 
 
 
