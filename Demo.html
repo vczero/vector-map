@@ -16,15 +16,18 @@
 		<script type="text/javascript">
 			window.onload = function() {
 				map = new Map('map');
-				map.zoomTo(1,map);
-				
+				map.zoomToByPx(100);
 			}
+			var b = 100;
+			//放大
 			function doBig(){
-				map.zoomTo(1.1,map);
+				b += 10;
+				map.zoomToByPx(b);
 			}
-
+			//缩小
 			function doSmall(){
-				map.zoomTo(0.9,map);
+				b -=10;
+				map.zoomToByPx(b);
 			}
 			
 		</script>

@@ -10,7 +10,7 @@ var Map = function(div) {
 	var div = document.getElementById(div);
 	this.width = 600;
 	this.height = 400;
-
+	this.zoom = 100; //缩放默认为100
 	if(div){
 		this.div = div;
 		this.width = parseInt(div.style.width);
@@ -32,8 +32,111 @@ Map.prototype.showMap = function(map){
 		document.getElementById('show_lnglat').innerHTML = '当前经纬度为:' + data.lng + ',' + data.lat;
 	});
 
-	//绘制省份
-   	var pointUrl='http://127.0.0.1:3000/province';
+	// //绘制省份
+ //   	var pointUrl='http://127.0.0.1:3000/province';
+ //   	$.ajax({
+	//      url:pointUrl,
+	//      data:'',
+	//      dataType:'jsonp',
+	//      processData: false, 
+	//      type:'get',
+	//      success:function callback(data){
+	//      	var features = data.features;
+	//      	for(var i = 0; i < features.length; i++){
+	//      		map.drawPolygon(features[i]);
+	//      	}
+	//      },
+ //     	error:function(XMLHttpRequest, textStatus, errorThrown) {
+ //       		console.log(XMLHttpRequest);
+ //     }});
+
+	// //获取服务的数据
+	// //绘制全国2019个县的数据
+	// var pointUrl='http://127.0.0.1:3000/point';
+ //   	$.ajax({
+	//      url:pointUrl,
+	//      data:'',
+	//      dataType:'jsonp',
+	//      processData: false, 
+	//      type:'get',
+	//      success:function callback(data){
+	//      	var geoinfo = data.geoinfo;
+	//      	for(var i = 0; i < geoinfo.length; i++){
+	//      		map.drawPoint(geoinfo[i]);
+	//      	}
+	//      },
+ //     	error:function(XMLHttpRequest, textStatus, errorThrown) {
+ //       		console.log(XMLHttpRequest);
+ //     }});
+
+
+ //   	//绘制全国边界数据
+ //   	var pointUrl='http://127.0.0.1:3000/line';
+ //   	$.ajax({
+	//      url:pointUrl,
+	//      data:'',
+	//      dataType:'jsonp',
+	//      processData: false, 
+	//      type:'get',
+	//      success:function callback(data){
+	//      	map.drawLine(data);
+	//      },
+ //     	error:function(XMLHttpRequest, textStatus, errorThrown) {
+ //       		console.log(XMLHttpRequest);
+ //     }});
+
+ //    //绘制海南
+ //   	var pointUrl='http://127.0.0.1:3000/hainan';
+ //   	$.ajax({
+	//      url:pointUrl,
+	//      data:'',
+	//      dataType:'jsonp',
+	//      processData: false, 
+	//      type:'get',
+	//      success:function callback(data){
+	//      	map.drawLine(data);
+	//      },
+ //     	error:function(XMLHttpRequest, textStatus, errorThrown) {
+ //       		console.log(XMLHttpRequest);
+ //     }});
+
+ //   	 //绘制台湾
+ //   	var pointUrl='http://127.0.0.1:3000/taiwan';
+ //   	$.ajax({
+	//      url:pointUrl,
+	//      data:'',
+	//      dataType:'jsonp',
+	//      processData: false, 
+	//      type:'get',
+	//      success:function callback(data){
+	//      	map.drawLine(data);
+	//      },
+ //     	error:function(XMLHttpRequest, textStatus, errorThrown) {
+ //       		console.log(XMLHttpRequest);
+ //     }});
+
+
+ //   	var pointUrl='http://127.0.0.1:3000/point';
+ //   	$.ajax({
+	//      url:pointUrl,
+	//      data:'',
+	//      dataType:'jsonp',
+	//      processData: false, 
+	//      type:'get',
+	//      success:function callback(data){
+	//      	var geoinfo = data.geoinfo;
+	//      	for(var i = 0; i < geoinfo.length; i++){
+	//      		map.drawText(geoinfo[i]);
+	//      	}
+	//      },
+ //     	error:function(XMLHttpRequest, textStatus, errorThrown) {
+ //       		console.log(XMLHttpRequest);
+ //     }});
+	
+
+
+	// 作为一个服务绘制
+   	var pointUrl='http://127.0.0.1:3000/quanguodata/get';
    	$.ajax({
 	     url:pointUrl,
 	     data:'',
@@ -42,128 +145,25 @@ Map.prototype.showMap = function(map){
 	     type:'get',
 	     success:function callback(data){
 	     	var features = data.features;
-	     	for(var i = 0; i < features.length; i++){
-	     		map.drawPolygon(features[i]);
+	     	for(var i = 0; i <features.length; i++){
+	     		var feature = features[i];
+	     		if(feature.geometry.type == 'Polygon'){
+	     			map.drawPolygon(feature);
+	     		}
+	     		if(feature.geometry.type == 'LineString'){
+	     			map.drawLine(feature);
+	     		}
+	     		if(feature.geometry.type == 'Point'){
+	     			map.drawPoint(feature);
+	     		}
+	     		if(feature.geometry.type == 'Point'){
+	     			map.drawText(feature);
+	     		}
 	     	}
 	     },
      	error:function(XMLHttpRequest, textStatus, errorThrown) {
        		console.log(XMLHttpRequest);
      }});
-
-	//获取服务的数据
-	//绘制全国2019个县的数据
-	var pointUrl='http://127.0.0.1:3000/point';
-   	$.ajax({
-	     url:pointUrl,
-	     data:'',
-	     dataType:'jsonp',
-	     processData: false, 
-	     type:'get',
-	     success:function callback(data){
-	     	var geoinfo = data.geoinfo;
-	     	for(var i = 0; i < geoinfo.length; i++){
-	     		map.drawPoint(geoinfo[i]);
-	     	}
-	     },
-     	error:function(XMLHttpRequest, textStatus, errorThrown) {
-       		console.log(XMLHttpRequest);
-     }});
-
-
-   	//绘制全国边界数据
-   	var pointUrl='http://127.0.0.1:3000/line';
-   	$.ajax({
-	     url:pointUrl,
-	     data:'',
-	     dataType:'jsonp',
-	     processData: false, 
-	     type:'get',
-	     success:function callback(data){
-	     	map.drawLine(data);
-	     },
-     	error:function(XMLHttpRequest, textStatus, errorThrown) {
-       		console.log(XMLHttpRequest);
-     }});
-
-    //绘制海南
-   	var pointUrl='http://127.0.0.1:3000/hainan';
-   	$.ajax({
-	     url:pointUrl,
-	     data:'',
-	     dataType:'jsonp',
-	     processData: false, 
-	     type:'get',
-	     success:function callback(data){
-	     	map.drawLine(data);
-	     },
-     	error:function(XMLHttpRequest, textStatus, errorThrown) {
-       		console.log(XMLHttpRequest);
-     }});
-
-   	 //绘制台湾
-   	var pointUrl='http://127.0.0.1:3000/taiwan';
-   	$.ajax({
-	     url:pointUrl,
-	     data:'',
-	     dataType:'jsonp',
-	     processData: false, 
-	     type:'get',
-	     success:function callback(data){
-	     	map.drawLine(data);
-	     },
-     	error:function(XMLHttpRequest, textStatus, errorThrown) {
-       		console.log(XMLHttpRequest);
-     }});
-
-
-   	var pointUrl='http://127.0.0.1:3000/point';
-   	$.ajax({
-	     url:pointUrl,
-	     data:'',
-	     dataType:'jsonp',
-	     processData: false, 
-	     type:'get',
-	     success:function callback(data){
-	     	var geoinfo = data.geoinfo;
-	     	for(var i = 0; i < geoinfo.length; i++){
-	     		map.drawText(geoinfo[i]);
-	     	}
-	     },
-     	error:function(XMLHttpRequest, textStatus, errorThrown) {
-       		console.log(XMLHttpRequest);
-     }});
-	
-
-
-	//作为一个服务绘制
-   	// var pointUrl='http://127.0.0.1:3000/quanguodata/get';
-   	// $.ajax({
-	   //   url:pointUrl,
-	   //   data:'',
-	   //   dataType:'jsonp',
-	   //   processData: false, 
-	   //   type:'get',
-	   //   success:function callback(data){
-	   //   	var features = data.features;
-	   //   	for(var i = 0; i <features.length; i++){
-	   //   		var feature = features[i];
-	   //   		if(feature.geometry.type == 'Polygon'){
-	   //   			map.drawPolygon(feature);
-	   //   		}
-	   //   		if(feature.geometry.type == 'LineString'){
-	   //   			map.drawLine(feature);
-	   //   		}
-	   //   		if(feature.geometry.type == 'Point'){
-	   //   			map.drawPoint(feature);
-	   //   		}
-	   //   		if(feature.geometry.type == 'Point'){
-	   //   			map.drawText(feature);
-	   //   		}
-	   //   	}
-	   //   },
-    //  	error:function(XMLHttpRequest, textStatus, errorThrown) {
-    //    		console.log(XMLHttpRequest);
-    //  }});
 }
 /*
 +----------------------------
@@ -284,7 +284,9 @@ Map.prototype.addPoint = function(point){
 	var y = xy.y;
 	this.context.fillStyle = "#FF0000";
 	this.context.beginPath();
-	this.context.arc(x,y,point.size,0,Math.PI*2,true);
+	//改变缩放位置
+	var cxy = this.changePosition(x, y, this.zoom);
+	this.context.arc(cxy.x, cxy.y, point.size, 0, Math.PI*2, true);
 	this.context.closePath();
 	this.context.fill();
 }
@@ -371,11 +373,13 @@ Map.prototype.addLine = function(line){
 		this.context.strokeStyle ="#B3B3B3";
 		this.context.beginPath();
 		this.context.lineWidth = 0.5;
-		this.context.moveTo(xy1.x, xy1.y);
+		var fxy = this.changePosition(xy1.x, xy1.y, this.zoom);
+		this.context.moveTo(fxy.x, fxy.y);
 		for(var i = 1; i < line.length; i++){
 			var mxy = Map.lngLat2XY(this.width, this.height, line[i][0], line[i][1], 
 					  this.maxLng, this.minLng, this.maxLat, this.minLat);
-			this.context.lineTo(mxy.x, mxy.y);
+			var nxy = this.changePosition(mxy.x, mxy.y, this.zoom);
+			this.context.lineTo(nxy.x, nxy.y);
 		}
 		this.context.closePath();
 		this.context.stroke();
@@ -415,12 +419,14 @@ Map.prototype.addPolygon = function(polygon){
 	if(polygon.length > 0){
 		var xy1 = Map.lngLat2XY(this.width, this.height, polygon[0][0], polygon[0][1], 
 				  this.maxLng, this.minLng, this.maxLat, this.minLat);
-		this.context.moveTo(xy1.x, xy1.y);
+		var fxy = this.changePosition(xy1.x, xy1.y, this.zoom);
+		this.context.moveTo(fxy.x, fxy.y);
 	}
 	for(var i = 1; i < polygon.length; i++){
 		var mxy = Map.lngLat2XY(this.width, this.height, polygon[i][0], polygon[i][1], 
 				  this.maxLng, this.minLng, this.maxLat, this.minLat);
-		this.context.lineTo(mxy.x, mxy.y);
+		var nxy = this.changePosition(mxy.x, mxy.y, this.zoom);
+		this.context.lineTo(nxy.x, nxy.y);
 	}
 	this.context.closePath();
 	this.context.fill();//填充省份多边形
@@ -451,7 +457,8 @@ Map.prototype.drawPolygon = function(geo_polygon){
 Map.prototype.addText = function(text){
 	this.context.font='2px';
 	this.context.fillStyle='#4E4036';
-	this.context.fillText(text.text,text.x,text.y);
+	var xy = this.changePosition(text.x, text.y, this.zoom);
+	this.context.fillText(text.text,xy.x,xy.y);
 }
 /*
 +------------------------------------
@@ -469,5 +476,28 @@ Map.prototype.drawText = function(feature){
 	text.x = xy.x;
 	text.y = xy.y;
 	this.addText(text);
+}
+/*
++------------------------------------
++ 改变地图要素的位置(基于屏幕坐标)
++------------------------------------
+*/
+Map.prototype.changePosition = function(x, y, zoom){
+	return {
+		x: x * (zoom / 100),
+		y: y * (zoom / 100)
+	};
+}
+/*
++------------------------------------
++ 基于要素的缩放
++------------------------------------
+*/
+Map.prototype.zoomToByPx = function(zoom){
+	//重绘之前清除视野
+	this.context.clearRect(-(this.width/2), -(this.height/2), this.width, this.height);
+	this.zoom = zoom;
+	// this.context.scale(zoom, zoom); //控制缩放
+	this.showMap(map); //绘制地图
 }
 
