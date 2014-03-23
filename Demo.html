@@ -21,12 +21,12 @@
 			var b = 100;
 			//放大
 			function doBig(){
-				b += 100;
+				b += 10;
 				map.zoomTo(b);
 			}
 			//缩小
 			function doSmall(){
-				b -=10;
+				b -= 10;
 				//防止太小，坐标倒置
 				if(b < 0){
 					b = 0;

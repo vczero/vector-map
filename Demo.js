@@ -565,6 +565,21 @@ Map.prototype.mouseZoomTo = function(){
 + 计算缩放级数(基于鼠标双击 缩放)
 +------------------------------------
 */
+Map.prototype.test = function(){
+	this.canvas.addEventListener('click', dbZoom, false);
+	alert('ok');
+	_this = this; //接收当前的this对象
+	var currentZoom = this.zoom;
+	var scorll = 0;
+	function dbZoom(){
+		alert('12ok');
+		scorll += 10;
+		//除以120，计算缩放级数
+		//每次缩放0.1
+		var zoom = currentZoom + scorll;
+		_this.zoomTo(zoom); 
+	}
+}
 
 
 
