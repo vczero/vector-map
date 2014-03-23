@@ -16,18 +16,22 @@
 		<script type="text/javascript">
 			window.onload = function() {
 				map = new Map('map');
-				map.zoomToByPx(100);
+				map.zoomTo(100);
 			}
 			var b = 100;
 			//放大
 			function doBig(){
-				b += 10;
-				map.zoomToByPx(b);
+				b += 100;
+				map.zoomTo(b);
 			}
 			//缩小
 			function doSmall(){
 				b -=10;
-				map.zoomToByPx(b);
+				//防止太小，坐标倒置
+				if(b < 0){
+					b = 0;
+				}
+				map.zoomTo(b);
 			}
 			
 		</script>

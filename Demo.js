@@ -249,18 +249,18 @@ Map.xy2LngLat = function(width, height, x, y, maxLng, minLng, maxLat, minLat){
  	var lat = maxLat - y*scaleY/3600; 
  	return {lng: lng, lat: lat};
 }
-/*
-+----------------------------
-+ 缩放
-+----------------------------
-*/
-Map.prototype.zoomTo = function(zoom, map){
-	//重绘之前清除矩形
-	this.context.clearRect(-(this.width/2), -(this.height/2), this.width, this.height);
-	this.context.scale(zoom, zoom); //控制缩放
-	this.showMap(map); //绘制地图
-	this.context.scale(1, 1);
-}
+// /*
+// +----------------------------
+// + 缩放
+// +----------------------------
+// */
+// Map.prototype.zoomTo = function(zoom, map){
+// 	//重绘之前清除矩形
+// 	this.context.clearRect(-(this.width/2), -(this.height/2), this.width, this.height);
+// 	this.context.scale(zoom, zoom); //控制缩放
+// 	this.showMap(map); //绘制地图
+// 	this.context.scale(1, 1);
+// }
 /*
 +-------------------------------------------------------
 + 点模型(x,y)
@@ -493,11 +493,36 @@ Map.prototype.changePosition = function(x, y, zoom){
 + 基于要素的缩放
 +------------------------------------
 */
-Map.prototype.zoomToByPx = function(zoom){
+Map.prototype.zoomTo = function(zoom){
 	//重绘之前清除视野
 	this.context.clearRect(-(this.width/2), -(this.height/2), this.width, this.height);
 	this.zoom = zoom;
-	// this.context.scale(zoom, zoom); //控制缩放
 	this.showMap(map); //绘制地图
 }
+/*
++------------------------------------
++ 左移
++------------------------------------
+*/
+Map.prototype.moveToLeft = function(px){
+
+}
+/*
++------------------------------------
++ 右移
++------------------------------------
+*/
+Map.prototype.moveToRight = function(px){
+	
+}
+/*
++------------------------------------
++ 平移(根据鼠标的按下事件移动)
++------------------------------------
+*/
+Map.prototype.panTo = function(px){
+	
+}
+
+
 
