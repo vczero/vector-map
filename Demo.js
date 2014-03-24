@@ -21,7 +21,7 @@ var Map = function(div) {
 		this.context = this.canvas.getContext("2d"); //获取绘图环境
 		this.context.translate(this.width/2,this.height/2);//将中心放到画布中心
 
-		this.mouseZoomTo();
+		// this.zoomToEvent();
 	}
 	this.maxLng = 135.5; 
 	this.minLng = 73;   
@@ -162,6 +162,7 @@ Map.prototype.showMap = function(map){
 	     			map.drawText(feature);
 	     		}
 	     	}
+	     	map.zoomToEvent();
 	     },
      	error:function(XMLHttpRequest, textStatus, errorThrown) {
        		console.log(XMLHttpRequest);
@@ -529,14 +530,27 @@ Map.prototype.moveToRight = function(x, y, offsetRight){
 +------------------------------------
 */
 Map.prototype.panTo = function(e){
-	
+	//(1)获取鼠标按下的起点
+	//(2)获取鼠标弹起的终点
+	//(3)计算两个点间的偏移
+	var startPoint = {};
+	var endPoint = {};
+	this.canvas.addEventListener('mousedown', function(e){
+
+	}, false);
+
+	this.canvas.addEventListener('mouseup', function(e){
+
+	}, false);
 }
+
+
 /*
 +------------------------------------
-+ 基于鼠标滚轮缩放
++ 基于鼠标滚轮、双击缩放
 +------------------------------------
 */
-Map.prototype.mouseZoomTo = function(){
+Map.prototype.zoomToEvent = function(){
 	var _this = this; //接收当前的this对象
 	var currentZoom = this.zoom;
 	var scorll = 0;
@@ -563,48 +577,7 @@ Map.prototype.mouseZoomTo = function(){
 		_this.zoomTo(zoom); 
 	}, false);
 }
-/*
-+------------------------------------
-+ 计算缩放级数(基于鼠标滚轮缩放)
-+------------------------------------
-*/
-// Map.prototype.getScorll = function(e,scorll,_this){
-// 	scorll += e.wheelDelta || 0;
-// 	//除以120，计算缩放级数
-// 	//每次缩放0.2
-// 	var zoom = this.zoom + (scorll / 120) * 100 * 0.2;
-// 	console.log(zoom);
-// 	//this.zoomTo(zoom);
-// }
-/*
-+------------------------------------
-+ 计算缩放级数(基于鼠标双击 缩放)
-+------------------------------------
-*/
-// Map.prototype.clickZoom = function(){
-// 	_this = this; //接收当前的this对象
-// 	var currentZoom = this.zoom;
-// 	var scorll = 0;
 
-// 	// document.getElementByTagName('').addEventListener('mousewheel',function(){
-// 	// 	console.log('hello');
-// 	// },false);
-
-// 	// this.canvas.addEventListener('dblclick ', dbZoom, false);
-// 	this.canvas.addEventListener('click ', function(){
-// 		alert('ok');
-// 	}, false);
-
-// 	console.log(this.canvas);
-// 	function dbZoom(){
-// 		alert('kkk');
-// 		scorll += 10;
-// 		//除以120，计算缩放级数
-// 		//每次缩放0.1
-// 		var zoom = currentZoom + scorll;
-// 		_this.zoomTo(zoom); 
-// 	}
-// }
 
 
 
