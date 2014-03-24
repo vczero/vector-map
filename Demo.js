@@ -20,6 +20,8 @@ var Map = function(div) {
 		this.setCanvas(this.canvas); //设置canvas大小
 		this.context = this.canvas.getContext("2d"); //获取绘图环境
 		this.context.translate(this.width/2,this.height/2);//将中心放到画布中心
+
+		this.mouseZoomTo();
 	}
 	this.maxLng = 135.5; 
 	this.minLng = 73;   
@@ -160,7 +162,6 @@ Map.prototype.showMap = function(map){
 	     			map.drawText(feature);
 	     		}
 	     	}
-	     	map.mouseZoomTo();
 	     },
      	error:function(XMLHttpRequest, textStatus, errorThrown) {
        		console.log(XMLHttpRequest);
@@ -505,23 +506,29 @@ Map.prototype.zoomTo = function(zoom){
 + 左移
 +------------------------------------
 */
-Map.prototype.moveToLeft = function(px){
-
+Map.prototype.moveToLeft = function(x, y, offsetLeft){
+	return {
+		x: x - offsetLeft,
+		y: y
+	}
 }
 /*
 +------------------------------------
 + 右移
 +------------------------------------
 */
-Map.prototype.moveToRight = function(px){
-	
+Map.prototype.moveToRight = function(x, y, offsetRight){
+	return {
+		x: x + offsetRight,
+		y: y
+	}
 }
 /*
 +------------------------------------
 + 平移(根据鼠标的按下事件移动)
 +------------------------------------
 */
-Map.prototype.panTo = function(px){
+Map.prototype.panTo = function(e){
 	
 }
 /*
@@ -530,12 +537,12 @@ Map.prototype.panTo = function(px){
 +------------------------------------
 */
 Map.prototype.mouseZoomTo = function(){
-	this.canvas.addEventListener('mousewheel', getScorll, false);
-	// 捕获鼠标动作
-	//这块的事件机制还没弄清
 	var _this = this; //接收当前的this对象
 	var currentZoom = this.zoom;
 	var scorll = 0;
+	//滚轮 
+	this.canvas.addEventListener('mousewheel', getScorll, false);
+	// 捕获鼠标动作
 	function getScorll(e){
 		scorll += e.wheelDelta;
 		//除以120，计算缩放级数
@@ -544,8 +551,17 @@ Map.prototype.mouseZoomTo = function(){
 		if(zoom < 0){
 			zoom = 0;
 		}
-		_this.zoomTo(zoom); //解决this的传入问题
+		_this.zoomTo(zoom); 
 	}
+
+	//双击
+	this.canvas.addEventListener('dblclick', function(){
+		scorll += 10;
+		//除以120，计算缩放级数
+		//每次缩放0.1
+		var zoom = currentZoom + scorll;
+		_this.zoomTo(zoom); 
+	}, false);
 }
 /*
 +------------------------------------
@@ -565,21 +581,30 @@ Map.prototype.mouseZoomTo = function(){
 + 计算缩放级数(基于鼠标双击 缩放)
 +------------------------------------
 */
-Map.prototype.test = function(){
-	this.canvas.addEventListener('click', dbZoom, false);
-	alert('ok');
-	_this = this; //接收当前的this对象
-	var currentZoom = this.zoom;
-	var scorll = 0;
-	function dbZoom(){
-		alert('12ok');
-		scorll += 10;
-		//除以120，计算缩放级数
-		//每次缩放0.1
-		var zoom = currentZoom + scorll;
-		_this.zoomTo(zoom); 
-	}
-}
+// Map.prototype.clickZoom = function(){
+// 	_this = this; //接收当前的this对象
+// 	var currentZoom = this.zoom;
+// 	var scorll = 0;
+
+// 	// document.getElementByTagName('').addEventListener('mousewheel',function(){
+// 	// 	console.log('hello');
+// 	// },false);
+
+// 	// this.canvas.addEventListener('dblclick ', dbZoom, false);
+// 	this.canvas.addEventListener('click ', function(){
+// 		alert('ok');
+// 	}, false);
+
+// 	console.log(this.canvas);
+// 	function dbZoom(){
+// 		alert('kkk');
+// 		scorll += 10;
+// 		//除以120，计算缩放级数
+// 		//每次缩放0.1
+// 		var zoom = currentZoom + scorll;
+// 		_this.zoomTo(zoom); 
+// 	}
+// }
 
 
 

@@ -17,6 +17,24 @@
 			window.onload = function() {
 				map = new Map('map');
 				map.zoomTo(100);
+
+
+				document.getElementById('offsetleft').addEventListener('mousewheel',function(){
+					console.log('hello');
+				},false);
+
+				document.getElementById('offsetleft').addEventListener('dblclick',function(){
+					console.log('hello world');
+				});
+
+
+				// document.getElementById('canvasLL').addEventListener('click',function(){
+				// 	console.log('click');
+				// });
+
+				// document.getElementById('canvasLL').addEventListener('dblclick',function(){
+				// 	console.log('2click');
+				// });
 			}
 			var b = 100;
 			//放大
@@ -26,6 +44,7 @@
 			}
 			//缩小
 			function doSmall(){
+				console.log(b);
 				b -= 10;
 				//防止太小，坐标倒置
 				if(b < 0){
@@ -43,7 +62,7 @@
 			<span id="show_lnglat" style="margin-left:20px;">当前经纬度为：</span><br/><br/>
 			<input id = "big" class="btn" type="button" value = "放大" onclick="doBig()"  style="margin-left:20px;" />
 			<input id = "small" class="btn" type="button" value = "缩小" onclick="doSmall()" />
-			<input class="btn" type="button" value = "左移" />
+			<input id = "offsetleft" class="btn" type="button" value = "左移" />
 			<input class="btn" type="button" value = "右移" />
 			<input class="btn" type="button" value = "画点" />
 			<input class="btn" type="button" value = "画线" />
@@ -52,5 +71,8 @@
 			<input class="btn" type="button" value = "面图层" />
 			<input class="btn" type="button" value = "点图层" />
 		</div>
+		<!-- <div>
+			<canvas id="canvasLL" style="width:300px;height:200px;border:1px solid red;"></canvas>
+		</div> -->
 	</body>
 </html>
