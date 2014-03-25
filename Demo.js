@@ -20,6 +20,7 @@ var Map = function(div) {
 		this.setCanvas(this.canvas); //设置canvas大小
 		this.context = this.canvas.getContext("2d"); //获取绘图环境
 		this.context.translate(this.width/2,this.height/2);//将中心放到画布中心
+		this.canvas.style.backgroundColor = '#ACC5E9';
 	}
 	this.maxLng = 135.5; 
 	this.minLng = 73;   
@@ -184,12 +185,13 @@ Map.prototype.showMap = function(map){
 	     		if(feature.geometry.type == 'LineString'){
 	     			map.drawLine(feature);
 	     		}
+	     		//县级行政中心暂时不画
 	     		// if(feature.geometry.type == 'Point'){
 	     		// 	map.drawPoint(feature);
 	     		// }
-	     		// if(feature.geometry.type == 'Point'){
-	     		// 	map.drawText(feature);
-	     		// }
+	     		if(feature.geometry.type == 'Point'){
+	     			map.drawText(feature);
+	     		}
 	     	}
 	     },
      	error:function(XMLHttpRequest, textStatus, errorThrown) {
@@ -381,7 +383,7 @@ Map.prototype.addLine = function(line){
 		var startPoint = line[0];
 		var xy1 = Map.lngLat2XY(this.width, this.height, startPoint[0], startPoint[1], 
 				  this.maxLng, this.minLng, this.maxLat, this.minLat);
-		this.context.strokeStyle ="#B3B3B3";
+		this.context.strokeStyle ="#9C957F";
 		this.context.beginPath();
 		this.context.lineWidth = 0.5;
 		var fxy = this.changePosition(xy1.x, xy1.y, this.zoom);
@@ -423,7 +425,7 @@ Map.prototype.drawLine = function(geo_line){
 +----------------------------
 */
 Map.prototype.addPolygon = function(polygon){
-	this.context.fillStyle = '#F1EEE8';
+	this.context.fillStyle = '#F5F3EF';
 	this.context.strokeStyle = '#D8B1D2';
 	this.context.beginPath();
 	this.context.lineWidth = 0.5;
@@ -467,7 +469,7 @@ Map.prototype.drawPolygon = function(geo_polygon){
 */
 Map.prototype.addText = function(text){
 	this.context.font='2px';
-	this.context.fillStyle='#4E4036';
+	this.context.fillStyle='#75746F';
 	var xy = this.changePosition(text.x, text.y, this.zoom);
 	this.context.fillText(text.text,xy.x,xy.y);
 }
