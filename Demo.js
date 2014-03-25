@@ -34,7 +34,38 @@ Map.prototype.showMap = function(map){
 		document.getElementById('show_lnglat').innerHTML = '当前经纬度为:' + data.lng + ',' + data.lat;
 	});
 
-	// //绘制省份
+	//------------------------绘制每个省份的城市边界---------------------
+	//四川
+   	// var pointUrl='http://127.0.0.1:3000/sichuan/get';
+   	// $.ajax({
+	   //   url:pointUrl,
+	   //   data:'',
+	   //   dataType:'jsonp',
+	   //   processData: false, 
+	   //   type:'get',
+	   //   success:function callback(data){
+	   //   	var features = data.features;
+	   //   	for(var i = 0; i <features.length; i++){
+	   //   		var feature = features[i];
+	   //   		if(feature.geometry.type == 'Polygon'){
+	   //   			map.drawPolygon(feature);
+	   //   		}
+	   //   		if(feature.geometry.type == 'LineString'){
+	   //   			map.drawLine(feature);
+	   //   		}
+	   //   		if(feature.geometry.type == 'Point'){
+	   //   			map.drawPoint(feature);
+	   //   		}
+	   //   		if(feature.geometry.type == 'Point'){
+	   //   			map.drawText(feature);
+	   //   		}
+	   //   	}
+	   //   },
+    //  	error:function(XMLHttpRequest, textStatus, errorThrown) {
+    //    		console.log(XMLHttpRequest);
+    //  }});
+   	//------------------------绘制每个省份的城市边界---------------------
+	//绘制省份
  //   	var pointUrl='http://127.0.0.1:3000/province';
  //   	$.ajax({
 	//      url:pointUrl,
@@ -136,7 +167,7 @@ Map.prototype.showMap = function(map){
  //     }});
 	
 
-
+//-------------------------------合成一个服务-------------------------------------------
 	// 作为一个服务绘制
    	var pointUrl='http://127.0.0.1:3000/quanguodata/get';
    	$.ajax({
@@ -155,18 +186,21 @@ Map.prototype.showMap = function(map){
 	     		if(feature.geometry.type == 'LineString'){
 	     			map.drawLine(feature);
 	     		}
-	     		if(feature.geometry.type == 'Point'){
-	     			map.drawPoint(feature);
-	     		}
-	     		if(feature.geometry.type == 'Point'){
-	     			map.drawText(feature);
-	     		}
+	     		// if(feature.geometry.type == 'Point'){
+	     		// 	map.drawPoint(feature);
+	     		// }
+	     		// if(feature.geometry.type == 'Point'){
+	     		// 	map.drawText(feature);
+	     		// }
 	     	}
-	     	map.zoomToEvent();
 	     },
      	error:function(XMLHttpRequest, textStatus, errorThrown) {
        		console.log(XMLHttpRequest);
      }});
+//---------------------------------------------------------------------------------------
+   
+
+   	map.zoomToEvent();
 }
 /*
 +----------------------------
@@ -536,10 +570,16 @@ Map.prototype.panTo = function(e){
 	var startPoint = {};
 	var endPoint = {};
 	this.canvas.addEventListener('mousedown', function(e){
+		var e = e || window.event;
+		x = e.clientX + document.body.scrollLeft + document.documentElement.scrollLeft - bounds.left + 0.5;
+		y = e.clientY + document.body.scrollTop + document.documentElement.scrollTop - bounds.top+ 1;
 
 	}, false);
 
 	this.canvas.addEventListener('mouseup', function(e){
+		var e = e || window.event;
+		x = e.clientX + document.body.scrollLeft + document.documentElement.scrollLeft - bounds.left + 0.5;
+		y = e.clientY + document.body.scrollTop + document.documentElement.scrollTop - bounds.top+ 1;
 
 	}, false);
 }

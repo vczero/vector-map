@@ -6,6 +6,7 @@ var _hainan = require('./_hainan');
 var _taiwan = require('./_taiwan');
 var _province = require('./_province');
 var _allHome = require('./_allHome');
+var _siChuan = require('./si_chuan');
 
 http.createServer(function (request, response) {
   	response.writeHead(200, {'Content-Type': 'text/javascript;charset=utf-8'});
@@ -13,6 +14,14 @@ http.createServer(function (request, response) {
       //获取全国边界数据
       if(request.url.indexOf('/quanguodata/get') >= 0){
         var str = JSON.stringify(_allHome);
+        var url =  require('url').parse(request.url, true);
+        console.log(url.query.callback);
+        str =  url.query.callback + '(' + str + ')';
+        response.end(str);
+      }
+      //四川内部数据
+      if(request.url.indexOf('/sichuan/get') >= 0){
+        var str = JSON.stringify(_siChuan);
         var url =  require('url').parse(request.url, true);
         console.log(url.query.callback);
         str =  url.query.callback + '(' + str + ')';
