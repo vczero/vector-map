@@ -20,8 +20,6 @@ var Map = function(div) {
 		this.setCanvas(this.canvas); //设置canvas大小
 		this.context = this.canvas.getContext("2d"); //获取绘图环境
 		this.context.translate(this.width/2,this.height/2);//将中心放到画布中心
-
-		// this.zoomToEvent();
 	}
 	this.maxLng = 135.5; 
 	this.minLng = 73;   
@@ -246,18 +244,6 @@ Map.prototype.getPosition = function(callback){
 		callback(lnglat);
 	}
 }
-/*
-+----------------------------
-+ 经纬度转屏幕坐标(左上角为原点) 静态方法
-+----------------------------
-*/
-// Map.lngLat2XY = function(width, height, lng, lat, maxLng, minLng, maxLat, minLat){
-// 	var scaleX = ((maxLng - minLng)*3600) / width; 
-// 	var scaleY = ((maxLat - minLat)*3600) / height; 
-// 	var x = (lng - minLng)*3600/scaleX;
-// 	var y = (maxLat - lat)*3600/scaleY;
-// 	return {x: x, y: y};
-// }
 
 /*
 +----------------------------
@@ -286,18 +272,6 @@ Map.xy2LngLat = function(width, height, x, y, maxLng, minLng, maxLat, minLat){
  	var lat = maxLat - y*scaleY/3600; 
  	return {lng: lng, lat: lat};
 }
-// /*
-// +----------------------------
-// + 缩放
-// +----------------------------
-// */
-// Map.prototype.zoomTo = function(zoom, map){
-// 	//重绘之前清除矩形
-// 	this.context.clearRect(-(this.width/2), -(this.height/2), this.width, this.height);
-// 	this.context.scale(zoom, zoom); //控制缩放
-// 	this.showMap(map); //绘制地图
-// 	this.context.scale(1, 1);
-// }
 /*
 +-------------------------------------------------------
 + 点模型(x,y)
