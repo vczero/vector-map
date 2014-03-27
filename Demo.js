@@ -186,12 +186,12 @@ Map.prototype.showMap = function(map){
 	     			map.drawLine(feature);
 	     		}
 	     		//县级行政中心暂时不画
-	     		// if(feature.geometry.type == 'Point'){
-	     		// 	map.drawPoint(feature);
-	     		// }
 	     		if(feature.geometry.type == 'Point'){
-	     			map.drawText(feature);
+	     			map.drawPoint(feature);
 	     		}
+	     		// if(feature.geometry.type == 'Point'){
+	     		// 	map.drawText(feature);
+	     		// }
 	     	}
 	     },
      	error:function(XMLHttpRequest, textStatus, errorThrown) {
@@ -283,7 +283,7 @@ Map.xy2LngLat = function(width, height, x, y, maxLng, minLng, maxLat, minLat){
 Map.prototype.Point = function(x, y){
 	this.x = x;
 	this.y = y;
-	this.size = 2;
+	this.size = 1;
 };
 /*
 +----------------------------
@@ -295,7 +295,7 @@ Map.prototype.addPoint = function(point){
 		this.maxLng, this.minLng, this.maxLat, this.minLat);
 	var x = xy.x;
 	var y = xy.y;
-	this.context.fillStyle = "#FF0000";
+	this.context.fillStyle = "#E10602";
 	this.context.beginPath();
 	//改变缩放位置
 	var cxy = this.changePosition(x, y, this.zoom);
@@ -383,9 +383,9 @@ Map.prototype.addLine = function(line){
 		var startPoint = line[0];
 		var xy1 = Map.lngLat2XY(this.width, this.height, startPoint[0], startPoint[1], 
 				  this.maxLng, this.minLng, this.maxLat, this.minLat);
-		this.context.strokeStyle ="#9C957F";
+		this.context.strokeStyle ="#006FC4";
 		this.context.beginPath();
-		this.context.lineWidth = 0.5;
+		this.context.lineWidth = 1.3;
 		var fxy = this.changePosition(xy1.x, xy1.y, this.zoom);
 		this.context.moveTo(fxy.x, fxy.y);
 		for(var i = 1; i < line.length; i++){
@@ -394,7 +394,7 @@ Map.prototype.addLine = function(line){
 			var nxy = this.changePosition(mxy.x, mxy.y, this.zoom);
 			this.context.lineTo(nxy.x, nxy.y);
 		}
-		this.context.closePath();
+		//this.context.closePath();
 		this.context.stroke();
 	}
 	// this.context.lineTo(xy2.x,xy2.y);
