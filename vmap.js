@@ -33,139 +33,6 @@ Map.prototype.showMap = function(map){
 		document.getElementById('show_lnglat').innerHTML = '当前经纬度为:' + data.lng + ',' + data.lat;
 	});
 
-	//------------------------绘制每个省份的城市边界---------------------
-	//四川
-   	// var pointUrl='http://127.0.0.1:3000/sichuan/get';
-   	// $.ajax({
-	   //   url:pointUrl,
-	   //   data:'',
-	   //   dataType:'jsonp',
-	   //   processData: false, 
-	   //   type:'get',
-	   //   success:function callback(data){
-	   //   	var features = data.features;
-	   //   	for(var i = 0; i <features.length; i++){
-	   //   		var feature = features[i];
-	   //   		if(feature.geometry.type == 'Polygon'){
-	   //   			map.drawPolygon(feature);
-	   //   		}
-	   //   		if(feature.geometry.type == 'LineString'){
-	   //   			map.drawLine(feature);
-	   //   		}
-	   //   		if(feature.geometry.type == 'Point'){
-	   //   			map.drawPoint(feature);
-	   //   		}
-	   //   		if(feature.geometry.type == 'Point'){
-	   //   			map.drawText(feature);
-	   //   		}
-	   //   	}
-	   //   },
-    //  	error:function(XMLHttpRequest, textStatus, errorThrown) {
-    //    		console.log(XMLHttpRequest);
-    //  }});
-   	//------------------------绘制每个省份的城市边界---------------------
-	//绘制省份
- //   	var pointUrl='http://127.0.0.1:3000/province';
- //   	$.ajax({
-	//      url:pointUrl,
-	//      data:'',
-	//      dataType:'jsonp',
-	//      processData: false, 
-	//      type:'get',
-	//      success:function callback(data){
-	//      	var features = data.features;
-	//      	for(var i = 0; i < features.length; i++){
-	//      		map.drawPolygon(features[i]);
-	//      	}
-	//      },
- //     	error:function(XMLHttpRequest, textStatus, errorThrown) {
- //       		console.log(XMLHttpRequest);
- //     }});
-
-	// //获取服务的数据
-	// //绘制全国2019个县的数据
-	// var pointUrl='http://127.0.0.1:3000/point';
- //   	$.ajax({
-	//      url:pointUrl,
-	//      data:'',
-	//      dataType:'jsonp',
-	//      processData: false, 
-	//      type:'get',
-	//      success:function callback(data){
-	//      	var geoinfo = data.geoinfo;
-	//      	for(var i = 0; i < geoinfo.length; i++){
-	//      		map.drawPoint(geoinfo[i]);
-	//      	}
-	//      },
- //     	error:function(XMLHttpRequest, textStatus, errorThrown) {
- //       		console.log(XMLHttpRequest);
- //     }});
-
-
- //   	//绘制全国边界数据
- //   	var pointUrl='http://127.0.0.1:3000/line';
- //   	$.ajax({
-	//      url:pointUrl,
-	//      data:'',
-	//      dataType:'jsonp',
-	//      processData: false, 
-	//      type:'get',
-	//      success:function callback(data){
-	//      	map.drawLine(data);
-	//      },
- //     	error:function(XMLHttpRequest, textStatus, errorThrown) {
- //       		console.log(XMLHttpRequest);
- //     }});
-
- //    //绘制海南
- //   	var pointUrl='http://127.0.0.1:3000/hainan';
- //   	$.ajax({
-	//      url:pointUrl,
-	//      data:'',
-	//      dataType:'jsonp',
-	//      processData: false, 
-	//      type:'get',
-	//      success:function callback(data){
-	//      	map.drawLine(data);
-	//      },
- //     	error:function(XMLHttpRequest, textStatus, errorThrown) {
- //       		console.log(XMLHttpRequest);
- //     }});
-
- //   	 //绘制台湾
- //   	var pointUrl='http://127.0.0.1:3000/taiwan';
- //   	$.ajax({
-	//      url:pointUrl,
-	//      data:'',
-	//      dataType:'jsonp',
-	//      processData: false, 
-	//      type:'get',
-	//      success:function callback(data){
-	//      	map.drawLine(data);
-	//      },
- //     	error:function(XMLHttpRequest, textStatus, errorThrown) {
- //       		console.log(XMLHttpRequest);
- //     }});
-
-
- //   	var pointUrl='http://127.0.0.1:3000/point';
- //   	$.ajax({
-	//      url:pointUrl,
-	//      data:'',
-	//      dataType:'jsonp',
-	//      processData: false, 
-	//      type:'get',
-	//      success:function callback(data){
-	//      	var geoinfo = data.geoinfo;
-	//      	for(var i = 0; i < geoinfo.length; i++){
-	//      		map.drawText(geoinfo[i]);
-	//      	}
-	//      },
- //     	error:function(XMLHttpRequest, textStatus, errorThrown) {
- //       		console.log(XMLHttpRequest);
- //     }});
-	
-
 //-------------------------------合成一个服务-------------------------------------------
 	// 作为一个服务绘制
    	var pointUrl='http://127.0.0.1:3000/quanguodata/get';
@@ -198,8 +65,6 @@ Map.prototype.showMap = function(map){
        		console.log(XMLHttpRequest);
      }});
 //---------------------------------------------------------------------------------------
-   
-
    	map.zoomToEvent();
 }
 /*
@@ -394,10 +259,8 @@ Map.prototype.addLine = function(line){
 			var nxy = this.changePosition(mxy.x, mxy.y, this.zoom);
 			this.context.lineTo(nxy.x, nxy.y);
 		}
-		//this.context.closePath();
 		this.context.stroke();
 	}
-	// this.context.lineTo(xy2.x,xy2.y);
 }
 /*
 +-----------------------------
