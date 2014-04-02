@@ -20,12 +20,12 @@ var Map = function(div) {
 		this.setCanvas(this.canvas); //设置canvas大小
 		this.context = this.canvas.getContext("2d"); //获取绘图环境
 		this.context.translate(this.width/2,this.height/2);//将中心放到画布中心
-		this.canvas.style.backgroundColor = '#ACC5E9';
+		this.canvas.style.backgroundColor = '#F5F3EF';
 	}
-	this.maxLng = 135.5; 
-	this.minLng = 73;   
-	this.maxLat = 55;
-	this.minLat = 3;
+	this.maxLng = 116.495032; 
+	this.minLng = 116.46203;   
+	this.maxLat = 40.005856;
+	this.minLat = 39.988136;
 };
 
 Map.prototype.showMap = function(map){
@@ -34,8 +34,9 @@ Map.prototype.showMap = function(map){
 	});
 
 //-------------------------------合成一个服务-------------------------------------------
+	
 	// 作为一个服务绘制
-   	var pointUrl='http://127.0.0.1:3000/quanguodata/get';
+   	var pointUrl='http://localhost:3000/wangjing/get';
    	$.ajax({
 	     url:pointUrl,
 	     data:'',
@@ -47,18 +48,22 @@ Map.prototype.showMap = function(map){
 	     	for(var i = 0; i <features.length; i++){
 	     		var feature = features[i];
 	     		if(feature.geometry.type == 'Polygon'){
-	     			map.drawPolygon(feature);
+	     			if(feature.properties.name == 'lvdi')
+	     				map.drawPolygon(feature,'#C2E0B9','#C2E0B9');
+	     			if(feature.properties.name == 'gonglu')
+	     				map.drawPolygon(feature,'#FFC65C','#FFC65C');
 	     		}
 	     		if(feature.geometry.type == 'LineString'){
-	     			map.drawLine(feature);
+	     			if(feature.properties.name == 'ditie')
+	     				map.drawLine(feature, '#F95A7A');
 	     		}
-	     		//县级行政中心暂时不画
+	     		
 	     		if(feature.geometry.type == 'Point'){
 	     			map.drawPoint(feature);
 	     		}
-	     		// if(feature.geometry.type == 'Point'){
-	     		// 	map.drawText(feature);
-	     		// }
+	     		if(feature.geometry.type == 'Point'){
+	     			map.drawText(feature);
+	     		}
 	     	}
 	     },
      	error:function(XMLHttpRequest, textStatus, errorThrown) {
@@ -73,10 +78,10 @@ Map.prototype.showMap = function(map){
 +----------------------------
 */
 Map.prototype.bounds = function(maxLng, minLng, maxLat, minLat){
-	this.maxLng = maxLng || 135.5;
-	this.minLng = minLng || 73;
-	this.maxLat = maxLat || 55;
-	this.minLat = minLat || 3;
+	this.maxLng = maxLng || 116.495032;
+	this.minLng = minLng || 116.46203;
+	this.maxLat = maxLat || 40.005856;
+	this.minLat = minLat || 39.988136;
 }
 /*
 +----------------------------
@@ -155,18 +160,25 @@ Map.prototype.Point = function(x, y){
 + 添加点(按点的结构)
 +----------------------------
 */
-Map.prototype.addPoint = function(point){
+Map.prototype.addPoint = function(point,style){
 	var xy = Map.lngLat2XY(this.width, this.height, point.x, point.y, 
 		this.maxLng, this.minLng, this.maxLat, this.minLat);
 	var x = xy.x;
 	var y = xy.y;
-	this.context.fillStyle = "#E10602";
+	this.context.fillStyle = style || "#E10602";
 	this.context.beginPath();
 	//改变缩放位置
 	var cxy = this.changePosition(x, y, this.zoom);
-	this.context.arc(cxy.x, cxy.y, point.size, 0, Math.PI*2, true);
-	this.context.closePath();
-	this.context.fill();
+	//画的是红点
+	// this.context.arc(cxy.x, cxy.y, point.size, 0, Math.PI*2, true);
+	// this.context.closePath();
+	// this.context.fill();
+	var image = new Image();
+	image.src = 'images/335.png';
+	_context = this.context;
+	image.onload = function(){
+		_context.drawImage(image,cxy.x, cxy.y,15,15);
+	}
 }
 /*
 +-----------------------------
@@ -183,10 +195,10 @@ Map.prototype.addPoint = function(point){
 	}
 +-----------------------------
 */
-Map.prototype.drawPoint = function(geo_point){
+Map.prototype.drawPoint = function(geo_point, style){
 	var lnglat = geo_point.geometry.coordinates;
 	var point = new this.Point(lnglat[0], lnglat[1]);
-	this.addPoint(point);
+	this.addPoint(point, style);
 }
 /*
 +-------------------------------------------------------
@@ -242,15 +254,15 @@ Map.prototype.Line = function(point1, point2){
 + 添加线(按线的结构)
 +----------------------------
 */
-Map.prototype.addLine = function(line){
+Map.prototype.addLine = function(line, style){
 	//根据点的个数绘制
 	if(line.length > 0){
 		var startPoint = line[0];
 		var xy1 = Map.lngLat2XY(this.width, this.height, startPoint[0], startPoint[1], 
 				  this.maxLng, this.minLng, this.maxLat, this.minLat);
-		this.context.strokeStyle ="#006FC4";
+		this.context.strokeStyle = style || "#006FC4";
 		this.context.beginPath();
-		this.context.lineWidth = 1.3;
+		this.context.lineWidth = 2.5;
 		var fxy = this.changePosition(xy1.x, xy1.y, this.zoom);
 		this.context.moveTo(fxy.x, fxy.y);
 		for(var i = 1; i < line.length; i++){
@@ -277,9 +289,9 @@ Map.prototype.addLine = function(line){
 	}
 +-----------------------------
 */
-Map.prototype.drawLine = function(geo_line){
+Map.prototype.drawLine = function(geo_line, style){
 	var coordinates = geo_line.geometry.coordinates;
-	this.addLine(coordinates);
+	this.addLine(coordinates, style);
 }
 
 /*
@@ -287,11 +299,11 @@ Map.prototype.drawLine = function(geo_line){
 + 添加多边形(按多边形的结构)
 +----------------------------
 */
-Map.prototype.addPolygon = function(polygon){
-	this.context.fillStyle = '#F5F3EF';
-	this.context.strokeStyle = '#D8B1D2';
+Map.prototype.addPolygon = function(polygon, fillStyle, strokeStyle){
+	this.context.fillStyle = fillStyle || '#EEB14A';
+	this.context.strokeStyle = strokeStyle || '#D8B1D2';
 	this.context.beginPath();
-	this.context.lineWidth = 0.5;
+	// this.context.lineWidth = 0.5;
 	if(polygon.length > 0){
 		var xy1 = Map.lngLat2XY(this.width, this.height, polygon[0][0], polygon[0][1], 
 				  this.maxLng, this.minLng, this.maxLat, this.minLat);
@@ -320,9 +332,9 @@ Map.prototype.addPolygon = function(polygon){
     }
 +------------------------------------
 */
-Map.prototype.drawPolygon = function(geo_polygon){
+Map.prototype.drawPolygon = function(geo_polygon, fillStyle, strokeStyle){
 	var coordinates = geo_polygon.geometry.coordinates;
-	this.addPolygon(coordinates[0]);
+	this.addPolygon(coordinates, fillStyle, strokeStyle);
 }
 
 /*
@@ -330,9 +342,9 @@ Map.prototype.drawPolygon = function(geo_polygon){
 + 绘制文本
 +----------------------------
 */
-Map.prototype.addText = function(text){
-	this.context.font='2px';
-	this.context.fillStyle='#75746F';
+Map.prototype.addText = function(text, style){
+	this.context.font='12px Arial';
+	this.context.fillStyle= style ||'#151515';
 	var xy = this.changePosition(text.x, text.y, this.zoom);
 	this.context.fillText(text.text,xy.x,xy.y);
 }
@@ -342,7 +354,7 @@ Map.prototype.addText = function(text){
 +------------------------------------
 */
 
-Map.prototype.drawText = function(feature){
+Map.prototype.drawText = function(feature, style){
 	var text = {};
     //转化坐标
     var coordinates = feature.geometry.coordinates;
@@ -351,7 +363,7 @@ Map.prototype.drawText = function(feature){
 	text.text = feature.properties.name;
 	text.x = xy.x;
 	text.y = xy.y;
-	this.addText(text);
+	this.addText(text, style);
 }
 /*
 +------------------------------------
@@ -456,6 +468,7 @@ Map.prototype.zoomToEvent = function(){
 		_this.zoomTo(zoom); 
 	}, false);
 }
+
 
 
 

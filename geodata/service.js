@@ -8,14 +8,45 @@ var _province = require('./_province');
 var _allHome = require('./_allHome');
 var _siChuan = require('./si_chuan');
 
+var _shenz = require('./_shenz.json');
+var _us = require('./_us.json');
+
+var _wangjing = require('./_wangjing.json');
+
 http.createServer(function (request, response) {
   	response.writeHead(200, {'Content-Type': 'text/javascript;charset=utf-8'});
+
+      //获取全国边界数据
+      if(request.url.indexOf('/wangjing/get') >= 0){
+        var str = JSON.stringify(_wangjing);
+        var url =  require('url').parse(request.url, true);
+        console.log(url.query.callback);
+        str =  url.query.callback + '(' + str + ')';
+        response.end(str);
+      }
 
       //获取全国边界数据
       if(request.url.indexOf('/quanguodata/get') >= 0){
         var str = JSON.stringify(_allHome);
         var url =  require('url').parse(request.url, true);
         console.log(url.query.callback);
+        str =  url.query.callback + '(' + str + ')';
+        response.end(str);
+      }
+
+      //获取美国边界数据
+      if(request.url.indexOf('/us/get') >= 0){
+        var str = JSON.stringify(_us);
+        var url =  require('url').parse(request.url, true);
+        console.log(url.query.callback);
+        str =  url.query.callback + '(' + str + ')';
+        console.log(str);
+        response.end(str);
+      }
+
+      if(request.url.indexOf('/sz/get') >= 0){
+        var str = JSON.stringify(_shenz);
+        var url =  require('url').parse(request.url, true);
         str =  url.query.callback + '(' + str + ')';
         response.end(str);
       }
