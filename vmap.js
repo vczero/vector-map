@@ -33,8 +33,7 @@ Map.prototype.showMap = function(map){
 		document.getElementById('show_lnglat').innerHTML = '当前经纬度为:' + data.lng + ',' + data.lat;
 	});
 
-//-------------------------------合成一个服务-------------------------------------------
-	
+//-------------------------------合成一个服务--------------------------------------
 	// 作为一个服务绘制
    	var pointUrl='http://localhost:3000/wangjing/get';
    	$.ajax({
@@ -53,6 +52,7 @@ Map.prototype.showMap = function(map){
 	     			if(feature.properties.name == 'gonglu')
 	     				map.drawPolygon(feature,'#FFC65C','#FFC65C');
 	     		}
+
 	     		if(feature.geometry.type == 'LineString'){
 	     			if(feature.properties.name == 'ditie')
 	     				map.drawLine(feature, '#F95A7A');
@@ -61,6 +61,7 @@ Map.prototype.showMap = function(map){
 	     		if(feature.geometry.type == 'Point'){
 	     			map.drawPoint(feature);
 	     		}
+
 	     		if(feature.geometry.type == 'Point'){
 	     			map.drawText(feature);
 	     		}
@@ -170,9 +171,9 @@ Map.prototype.addPoint = function(point,style){
 	//改变缩放位置
 	var cxy = this.changePosition(x, y, this.zoom);
 	//画的是红点
-	// this.context.arc(cxy.x, cxy.y, point.size, 0, Math.PI*2, true);
-	// this.context.closePath();
-	// this.context.fill();
+	this.context.arc(cxy.x, cxy.y, point.size, 0, Math.PI*2, true);
+	this.context.closePath();
+	this.context.fill();
 	var image = new Image();
 	image.src = 'images/335.png';
 	_context = this.context;
@@ -469,6 +470,73 @@ Map.prototype.zoomToEvent = function(){
 	}, false);
 }
 
+/*
++------------------------------------
++ 要素渲染样式
++------------------------------------
+*/
+Map.prototype.getStyle = function(type){
+	switch(type){
+		case'lvdi':
+			return {
+				fillStyle: '#C2E0B9',
+				strokeStyle: '#C2E0B9'
+			};
+			break;
+		case 'shuiyu':
+			return {
+				fillStyle: '#ACC5E9',
+				strokeStyle: '#ACC5E9'
+			};
+			break;
+		case 'gandao': 
+			return {
+				fillStyle: '#FFC65C',
+				strokeStyle: '#EEA62B'
+			};
+			break;
+		case 'zhilu': 
+			return {
+				fillStyle: '#FFFDB5',
+				strokeStyle: '#E8DDC2'
+			};
+			break;
+		case 'ditie': 
+		    return {
+		    	stroke: '#16A9DC'
+		    };
+			break;
+		case 'beijing': 
+		    return {
+		    	fillStyle: '#F5F3EF'
+		    };
+			break;
+		case 'diming': 
+		    return {
+		    	fillStyle: '#568FE3',
+		    	font_color: '#FAFAFA'
+		    };
+		    break;
+		case 'xiaolu':
+			return {
+				fillStyle: '#FFFFFF',
+				strokeStyle: '#EFEDE7'
+			};
+			break;
+		case 'jianzhu':
+			return {
+				fillStyle: '#F8F7F3',
+				strokeStyle: '#E6E5E2'
+			};
+			break;
+		default:
+			return {
+				fillStyle: 'NULL',
+				strokeStyle: 'NULL'
+			};
+			break;
+	}
+}
 
 
 
