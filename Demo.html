@@ -16,7 +16,6 @@
 		<script type="text/javascript">
 			window.onload = function() {
 				map = new Map('map');
-				// map.bounds(113.9533,113.8602,22.5259,22.4754);
 				map.zoomTo(100);
 
 
@@ -27,15 +26,6 @@
 				document.getElementById('offsetleft').addEventListener('dblclick',function(){
 					console.log('hello world');
 				});
-
-
-				// document.getElementById('canvasLL').addEventListener('click',function(){
-				// 	console.log('click');
-				// });
-
-				// document.getElementById('canvasLL').addEventListener('dblclick',function(){
-				// 	console.log('2click');
-				// });
 			}
 			var b = 100;
 			//放大
@@ -72,8 +62,5 @@
 			<input class="btn" type="button" value = "面图层" />
 			<input class="btn" type="button" value = "点图层" />
 		</div>
-		<!-- <div>
-			<canvas id="canvasLL" style="width:300px;height:200px;border:1px solid red;"></canvas>
-		</div> -->
 	</body>
 </html>

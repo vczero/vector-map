@@ -1,11 +1,5 @@
-//引用JQUERY
 document.write("<script language=javascript src='jquery.js'></script>");
-/*
-+-------------------------------------------------------
-+ Map类
-+ 主类
-+-------------------------------------------------------
-*/
+
 var Map = function(div) {
 	var div = document.getElementById(div);
 	this.width = 600;
@@ -22,10 +16,15 @@ var Map = function(div) {
 		this.context.translate(this.width/2,this.height/2);//将中心放到画布中心
 		this.canvas.style.backgroundColor = '#F5F3EF';
 	}
-	this.maxLng = 116.495032; 
-	this.minLng = 116.46203;   
-	this.maxLat = 40.005856;
-	this.minLat = 39.988136;
+	//this.maxLng = 116.495032; 
+	//this.minLng = 116.46203;   
+	//this.maxLat = 40.005856;
+	//this.minLat = 39.988136;
+	
+	this.maxLng = 135; 
+	this.minLng = 72;   
+	this.maxLat = 55;
+	this.minLat = 5;
 };
 
 Map.prototype.showMap = function(map){
@@ -35,7 +34,8 @@ Map.prototype.showMap = function(map){
 
 //-------------------------------合成一个服务--------------------------------------
 	// 作为一个服务绘制
-   	var pointUrl='http://localhost:3000/wangjing/get';
+   	//var pointUrl='http://localhost:3000/wangjing/get';
+	var pointUrl='http://localhost:3000/province';
    	$.ajax({
 	     url:pointUrl,
 	     data:'',
@@ -44,6 +44,7 @@ Map.prototype.showMap = function(map){
 	     type:'get',
 	     success:function callback(data){
 	     	var features = data.features;
+			console.log(data);
 	     	for(var i = 0; i <features.length; i++){
 	     		var feature = features[i];
 	     		if(feature.geometry.type == 'Polygon'){
@@ -79,10 +80,15 @@ Map.prototype.showMap = function(map){
 +----------------------------
 */
 Map.prototype.bounds = function(maxLng, minLng, maxLat, minLat){
-	this.maxLng = maxLng || 116.495032;
-	this.minLng = minLng || 116.46203;
-	this.maxLat = maxLat || 40.005856;
-	this.minLat = minLat || 39.988136;
+	//this.maxLng = maxLng || 116.495032;
+	//this.minLng = minLng || 116.46203;
+	//this.maxLat = maxLat || 40.005856;
+	//this.minLat = minLat || 39.988136;
+	
+	this.maxLng = maxLng || 135;
+	this.minLng = minLng || 72;
+	this.maxLat = maxLat || 55;
+	this.minLat = minLat || 5;
 }
 /*
 +----------------------------
@@ -181,21 +187,7 @@ Map.prototype.addPoint = function(point,style){
 		_context.drawImage(image,cxy.x, cxy.y,15,15);
 	}
 }
-/*
-+-----------------------------
-+ 绘制点(按GeoJSON格式)
-	{
-	  "type": "Feature",
-	  "geometry": {
-	    "type": "Point",
-	    "coordinates": [135.5, 53]
-	  },
-	  "properties": {
-	    "name": "XXX"
-	  }
-	}
-+-----------------------------
-*/
+
 Map.prototype.drawPoint = function(geo_point, style){
 	var lnglat = geo_point.geometry.coordinates;
 	var point = new this.Point(lnglat[0], lnglat[1]);

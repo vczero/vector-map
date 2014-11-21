@@ -16,7 +16,7 @@ var _wangjing = require('./_wangjing.json');
 http.createServer(function (request, response) {
   	response.writeHead(200, {'Content-Type': 'text/javascript;charset=utf-8'});
 
-      //获取全国边界数据
+      //获取望京数据
       if(request.url.indexOf('/wangjing/get') >= 0){
         var str = JSON.stringify(_wangjing);
         var url =  require('url').parse(request.url, true);
